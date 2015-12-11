@@ -3,7 +3,7 @@ define(function(require) {
 	/*
 	 * justory
 	 */
-
+	
 	require('extend/window').init();
 
 	var configs = require('extend/configs');
