@@ -10,39 +10,46 @@ define(function(require, exports, module) {
 		return {
 			open: function() {
 				var cfg = justory.configs;
-				var o = arguments[0];
+				var arg = arguments[0];
 				var callback = arguments.last();
 				var frames = [];
-				var rect = o.rect || {};
+				var rect = arg.rect || {};
 				var sbHeight = cfg.statusBarHeight;
-				for (var i = 0; i < o.frames.length; i++) {
-					var module = o.frames[i].module;
-					var name = o.frames[i].name || cfg.defaultWN;
-					var bounces = (o.frames[i].bounces == "no") ? false : true;
+				for (var i = 0; i < arg.frames.length; i++) {
+					var frame = arg.frames[i];
+					var module = frame.module;
+					var name = frame.name || cfg.defaultFN;
+					var moduleName = cfg.prefixFG + module + "_" + name;
+					var url = frame.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
 					frames.push({
-						name: cfg.prefixFG + module + "_" + name,
-						url: "../" + module + "/" + name + "." + cfg.defaultWFT,
-						bgColor: o.frames[i].bgColor || "rgba(255,255,255,0)",
-						bounces: bounces,
-						vScrollBarEnabled: false,
-						hScrollBarEnabled: false,
-						pageParam: o.frames[i].pageParam
+						name: moduleName,
+						url: url,
+						bgColor: frame.bgColor || "rgba(255,255,255,0)",
+						bounces: (frame.bounces === true) ? true : false,
+						vScrollBarEnabled: (frame.vScrollBar === true) ? true : false,
+						hScrollBarEnabled: (frame.hScrollBar === true) ? true : false,
+						scrollToTop: (frame.scrollToTop === false) ? false : true,
+						scaleEnabled: (frame.scaleEnabled === true) ? true : false,
+						allowEdit: (frame.allowEdit === true) ? true : false,
+						softInputMode: frame.softInputMode || "auto",
+						pageParam: frame.pageParam || {}
 					});
 				}
 				api.openFrameGroup({
-					name: o.name,
-					scrollEnabled: o.scroll || false,
-					background: o.background || "rgba(255,255,255,0)",
+					name: arg.name,
+					scrollEnabled: (arg.scroll === false) ? false : true,
+					background: arg.background || "rgba(255,255,255,0)",
 					rect: {
 						x: rect.x || 0,
 						y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
-						w: rect.w || 'auto',
-						h: rect.h || api.winHeight - sbHeight
+						w: rect.w || "auto",
+						h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight)
 					},
-					index: o.index || 0,
-					preload: o.preload || 0,
+					index: arg.index || 0,
+					preload: arg.preload || 0,
 					frames: frames
 				}, function(ret, err) {
+					//index 0,1,2...
 					var index = parseInt(ret.index);
 					callback(index);
 				});
