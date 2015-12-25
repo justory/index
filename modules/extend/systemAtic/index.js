@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
 	var fn = function() {
-		return {
+		return {/*
 			loading: function() {
 				var loading = require('extend/systemAtic/loading');
 				this.open = function() {
@@ -25,6 +25,10 @@ define(function(require, exports, module) {
 				this.open = function() {
 					toast.open.apply("", arguments[0]);
 				}
+			},*/
+			log: function() {
+				var console = require('extend/systemAtic/console');
+				console.log.apply("", arguments);
 			}
 		}
 	}();

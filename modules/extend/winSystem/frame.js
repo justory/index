@@ -51,6 +51,11 @@ define(function(require, exports, module) {
 						marginRight: rect.mr || 0
 					}
 				});
+				justory.systems.log("openFrame:", {
+					name: moduleName,
+					url: url,
+					pageParam: pageParam
+				});
 			}
 		}
 	}();

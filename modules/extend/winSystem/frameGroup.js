@@ -10,6 +10,7 @@ define(function(require, exports, module) {
 		return {
 			open: function() {
 				var cfg = justory.configs;
+				var sys = justory.systems;
 				var arg = arguments[0];
 				var callback = arguments.last();
 				var frames = [];
@@ -49,9 +50,16 @@ define(function(require, exports, module) {
 					preload: arg.preload || 0,
 					frames: frames
 				}, function(ret, err) {
-					//index 0,1,2...
 					var index = parseInt(ret.index);
 					callback(index);
+					sys.log("frameGroup callback:", {
+						ret: ret,
+						err: err
+					});
+				});
+				sys.log("openFrameGroup:", {
+					name: arg.name,
+					frames: frames
 				});
 			}
 		}

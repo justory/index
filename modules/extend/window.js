@@ -24,11 +24,13 @@ define(function(require, exports, module) {
 					}
 					this.length -= 1;
 				};
+				Array.prototype.remove.exec = function() {};
 
 				//返回数组最后一个元素
 				Array.prototype.last = function() {
 					return this[this.length - 1];
 				};
+				Array.prototype.last.exec = function() {};
 
 				//返回对象(长度存在)最后一个对象
 				Object.prototype.last = function() {
@@ -38,6 +40,7 @@ define(function(require, exports, module) {
 						return "";
 					}
 				};
+				Object.prototype.last.exec = function() {};
 
 				//尝试将String转换为Object
 				_$.prototype.strParse = function(arg) {
