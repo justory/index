@@ -1,6 +1,7 @@
 define(function(require, exports, module) {
 
 	var fn = function() {
+		var v = require("extend/winSystem/version");
 		return {
 			/*
 						loading: function() {
@@ -28,11 +29,11 @@ define(function(require, exports, module) {
 							}
 						},*/
 			click: function() {
-				var touch = require('extend/systemAtic/touch/1.0.0');
+				var touch = require('extend/systemAtic/touch/' + v.touch);
 				touch.touch.apply("", arguments);
 			},
 			log: function() {
-				var console = require('extend/systemAtic/console/1.0.0');
+				var console = require('extend/systemAtic/console/' + v.console);
 				console.log.apply("", arguments);
 			}
 		}
