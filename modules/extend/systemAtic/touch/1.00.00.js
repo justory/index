@@ -1,1 +1,0 @@
-define(function(require,exports,module){var n=function(){return{log:function(){alert(456);var n=(justory.configs,arguments),e=n[0],e=e||"no message!",a=n[1]?JSON.stringify(n[1]):"no additional data!",o=new Date;console.log("["+o.getUTCSeconds()+":"+o.getMilliseconds()+"]{"+e+"}["+api.winName+"]["+api.frameName+"]==>"+a)}}}();module.exports=n});

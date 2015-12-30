@@ -1,8 +1,8 @@
 define(function(require, exports, module) {
 
 	module.exports = {
-		frame: "1.00.00",
-		frameGroup: "1.00.00"
+		frame: "1.00.03",
+		frameGroup: "1.00.05"
 	};
 
 });
