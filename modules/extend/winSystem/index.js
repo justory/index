@@ -1,12 +1,13 @@
 define(function(require, exports, module) {
 
 	var fn = function() {
+		var v = require("extend/winSystem/version");
 		return {
 			f: function() {
-				return require("extend/winSystem/frame");
+				return require("extend/winSystem/frame/" + v.frame);
 			},
 			fg: function() {
-				return require("extend/winSystem/frameGroup");
+				return require("extend/winSystem/frameGroup/" + v.frameGroup);
 			},
 			frame: {
 				open: function() {
