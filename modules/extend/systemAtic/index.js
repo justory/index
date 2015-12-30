@@ -1,7 +1,7 @@
 define(function(require, exports, module) {
 
 	var fn = function() {
-		var v = require("extend/winSystem/version");
+		var v = require("extend/systemAtic/version");
 		return {
 			/*
 						loading: function() {
@@ -29,12 +29,16 @@ define(function(require, exports, module) {
 							}
 						},*/
 			click: function() {
-				var touch = require('extend/systemAtic/touch/' + v.touch);
-				touch.touch.apply("", arguments);
+				var arg = arguments;
+				require.async('extend/systemAtic/touch/' + v.touch, function(t) {
+					t.touch.apply("", arg);
+				});
 			},
 			log: function() {
-				var console = require('extend/systemAtic/console/' + v.console);
-				console.log.apply("", arguments);
+				var arg = arguments;
+				require.async('extend/systemAtic/console/' + v.console, function(c) {
+					c.log.apply("", arg);
+				});
 			}
 		}
 	}();

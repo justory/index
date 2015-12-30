@@ -3,15 +3,22 @@ define(function(require, exports, module) {
 	var fn = function() {
 		var v = require("extend/winSystem/version");
 		return {
-			f: function() {
-				return require("extend/winSystem/frame/" + v.frame);
+			f: function(cb) {
+				require.async("extend/winSystem/frame/" + v.frame, function(f) {
+					cb(f);
+				});
 			},
-			fg: function() {
-				return require("extend/winSystem/frameGroup/" + v.frameGroup);
+			fg: function(cb) {
+				require.async("extend/winSystem/frameGroup/" + v.frameGroup, function(fg) {
+					cb(fg);
+				});
 			},
 			frame: {
 				open: function() {
-					fn.f().open.apply("", arguments);
+					var arg = arguments;
+					fn.f(function(f) {
+						f.open.apply("", arg);
+					});
 				},
 				close: function() {
 					//
@@ -19,7 +26,10 @@ define(function(require, exports, module) {
 			},
 			frameGroup: {
 				open: function() {
-					fn.fg().open.apply("", arguments);
+					var arg = arguments;
+					fn.fg(function(fg) {
+						fg.open.apply("", arg);
+					});
 				},
 				close: function() {
 					//
