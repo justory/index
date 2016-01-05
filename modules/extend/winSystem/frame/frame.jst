@@ -15,16 +15,13 @@ define(function(require, exports, module) {
 				var name = arg.name || cfg.defaultFN;
 				var moduleName = module + "_" + name;
 				var url = arg.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
-				var bgColor = arg.bgColor || "#fff";
 				var sbHeight = cfg.statusBarHeight;
 				var rect = arg.rect || {};
-				var x = rect.x || 0;
 				var animation = arg.animation || {
 					type: cfg.winAnt(1)
 				};
 				(arg.pageParam && arg.pageParam.pageParam) ? [$.extend(arg.pageParam, arg.pageParam.pageParam), delete arg.pageParam.pageParam] : "";
 				var pageParam = arg.pageParam || {};
-				if (pageParam.loading === true || arg.loading === true) x = -api.winWidth;
 				api.openFrame({
 					name: moduleName,
 					url: url,
@@ -38,12 +35,12 @@ define(function(require, exports, module) {
 					softInputMode: arg.softInputMode || "auto",
 					reload: (arg.reload === true) ? true : false,
 					showProgress: (arg.showProgress === true) ? true : false,
-					animation: animation,
+					//animation: animation,
 					pageParam: pageParam,
 					rect: {
-						x: x,
+						x: rect.x || 0,
 						y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
-						w: rect.w || "auto",
+						w: rect.w || api.winWidth,
 						h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
 						marginLeft: rect.mL || 0,
 						marginTop: rect.mt || 0,
@@ -51,10 +48,28 @@ define(function(require, exports, module) {
 						marginRight: rect.mr || 0
 					}
 				});
+				if (pageParam.loading === true || arg.loading === true) api.setFrameAttr({
+					name: moduleName,
+					hidden: true
+				});
 				justory.systems.log("openFrame:", {
 					name: moduleName,
 					url: url,
 					pageParam: pageParam
+				});
+			},
+			close: function() {
+				var cfg = justory.configs;
+				var arg = arguments[0];
+				var module = arg.module;
+				var name = arg.name || cfg.defaultFN;
+				var moduleName = module + "_" + name || "";
+				api.closeFrame({
+					name: moduleName
+				});
+				justory.systems.log("closeFrame:", {
+					name: moduleName,
+					url: cfg.static + module + "/" + name + "." + cfg.defaultFT
 				});
 			}
 		}

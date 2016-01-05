@@ -21,7 +21,10 @@ define(function(require, exports, module) {
 					});
 				},
 				close: function() {
-					//
+					var arg = arguments;
+					fn.f(function(f) {
+						f.close.apply("", arg);
+					});
 				}
 			},
 			frameGroup: {
