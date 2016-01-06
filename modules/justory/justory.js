@@ -301,7 +301,7 @@
 			if (b && "plugins" === c) {
 				c = "preload";
 				for (var d = [], f =
-					void 0; f = b.shift();)
+						void 0; f = b.shift();)
 					d.push(ga + "plugin-" + f);
 				b = d
 			}
@@ -422,17 +422,17 @@
 		M({
 			plugins: O
 		});
-		apiready = function() {
+		window.apiready = () => {
 
 			//ios statusBar
 			window.statusBar = false;
 			window.statusBarHeight = 0;
 			if (api.systemType == "ios") {
-				var numSV = parseInt(api.systemVersion, 10);
+				const numSV = parseInt(api.systemVersion, 10);
 				if (numSV >= 7 && !api.fullScreen && api.iOS7StatusBarAppearance) {
-					window.statusBar = true;
-					window.statusBarHeight = 20;
-					var style  =  document.createElement("style");
+					statusBar = true;
+					statusBarHeight = 20;
+					const style  =  document.createElement("style");
 					style.innerHTML  =  "._StatusBar{padding-top:20px;}";
 					document.head.appendChild(style);
 				}
