@@ -1,0 +1,64 @@
+/**
+ * 窗口组模块
+ * ver 1.0.1
+ * @author {@link http://justory.cn/#frameGroup}
+ */
+
+const ret = {
+	open(...arg) {
+		const cfg = justory.configs;
+		const sys = justory.systems;
+		let opt = arg[0];
+		let callback = arg.last();
+		let frames = [];
+		let rect = opt.rect || {};
+		let sbHeight = cfg.statusBarHeight;
+		for (let i = 0; i < opt.frames.length; i++) {
+			let frame = opt.frames[i];
+			let module = frame.module;
+			let name = frame.name || cfg.defaultFN;
+			let moduleName = cfg.prefixFG + module + "_" + name;
+			let url = frame.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
+			frames.push({
+				name: moduleName,
+				url,
+				bgColor: frame.bgColor || "rgba(255,255,255,0)",
+				bounces: (frame.bounces === true) ? true : false,
+				vScrollBarEnabled: (frame.vScrollBar === true) ? true : false,
+				hScrollBarEnabled: (frame.hScrollBar === true) ? true : false,
+				scrollToTop: (frame.scrollToTop === false) ? false : true,
+				scaleEnabled: (frame.scaleEnabled === true) ? true : false,
+				allowEdit: (frame.allowEdit === true) ? true : false,
+				softInputMode: frame.softInputMode || "auto",
+				pageParam: frame.pageParam || {}
+			});
+		}
+		api.openFrameGroup({
+			name: opt.name,
+			scrollEnabled: (opt.scroll === false) ? false : true,
+			background: opt.background || "rgba(255,255,255,0)",
+			rect: {
+				x: rect.x || 0,
+				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
+				w: rect.w || "auto",
+				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight)
+			},
+			index: opt.index || 0,
+			preload: opt.preload || 0,
+			frames: frames
+		}, (ret, err) => {
+			var index = parseInt(ret.index);
+			callback(index);
+			sys.log("frameGroup callback:", {
+				ret: ret,
+				err: err
+			});
+		});
+		sys.log("openFrameGroup:", {
+			name: opt.name,
+			frames: frames
+		});
+	}
+}
+
+export default ret;
