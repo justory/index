@@ -3,25 +3,9 @@
  */
 
 import Jquery from 'Jquery';
-import version from 'extend/windows/version';
 
 //Jquery
 window.$ = Jquery;
-
-//version
-console.log(JSON.stringify(require));
-require.config({
-		baseUrl: "../../modules",
-		paths: {
-			Main: "extend/main",
-			Jquery: "jquery/jquery",
-			Basics: "extend/basics",
-			Configs: "extend/configs",
-			Windows: "extend/windows/index",
-			Systems: "extend/systems/index",
-			frameGroup: "extend/windows/frameGroup/" + version.frameGroup
-		}
-	})
 
 //删除数组指定索引元素
 Array.prototype.remove = function(index) {

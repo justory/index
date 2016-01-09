@@ -6,12 +6,20 @@ import Systems from 'Systems';
 
 //基础模块添加其他模块
 class _$ extends Basics {
+
 	constructor() {
 		super();
 		this.configs = Configs;
 		this.windows = Windows;
 		this.systems = Systems;
+
+		//简化接口
+		this.log = Systems.log;
+		this.click = Systems.click;
+		this.frame = Windows.frame;
+		this.frameGroup = Windows.frameGroup;
 	}
+	
 }
 
 //全局环境添加justory
@@ -46,5 +54,4 @@ setTimeout(() => {
 $(() => {
 	//开始载入页面主JS文件
 	dataMain && require([dataMain]);
-	console.log('main ok');
 })

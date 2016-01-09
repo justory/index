@@ -1,81 +1,108 @@
-define(function(require, exports, module) {
-	var t = function() {
-		var o, e = !1,
-			n = function(t) {
-				o = setTimeout(function() {
-					e = !1, clearTimeout(o)
-				}, parseInt(t))
-			};
-		return {
-			touch: function() {
-				var i, a, u, c, r = justory.configs,
-					s = justory.systems,
-					l = arguments,
-					m = l[0],
-					f = "string" == typeof l[1] ? l[1] : "",
-					g = l.last(),
-					p = "function" == typeof g ? g : g.tap,
-					v = function(i) {
-						var a = i;
-						return e ? (clearTimeout(o), n(r.blockClickTime), !1) : (e = !0, p(a), n(r.blockClickTime), void t.talkingDataClick(m, a))
-					},
-					T = !0,
-					h = !0,
-					k = !0;
-				$(document).on("touchstart", m, function(t) {
-					T = !0, h = !0, k = !0, clearTimeout(i), clearTimeout(a), clearTimeout(u), clearTimeout(c);
-					var o = this;
-					f && (i = setTimeout(function() {
-						T && $(o).addClass(f)
-					}, 90)), a = setTimeout(function() {
-						h = !1, k && ("object" == typeof g && g.lang && ($(o).removeClass(f), g.lang()), s.log("long touchstart:", {
-							option: m
-						}))
-					}, 500), s.log("touchstart:", {
-						option: m
-					})
-				}), $(document).on("touchmove", m, function(t) {
-					var o = this;
-					T = !1, k = !1, clearTimeout(a), f && (u = setTimeout(function() {
-						$(o).removeClass(f)
-					}, 100)), s.log("touchmove:", {
-						option: m
-					})
-				}), $(document).on("touchend", m, function(t) {
-					var o = this;
-					k = !1, clearTimeout(a), f && (c = setTimeout(function() {
-						$(o).removeClass(f)
-					}, 100)), s.log("touchend:", {
-						option: m
-					}), T && h && v(o)
-				})
-			},
-			talkingDataClick: function(t, o) {
-				var e = justory.configs,
-					n = justory.systems;
-				if (e.talkingDataClick) {
-					var i = api.require("talkingData"),
-						a = $(t).index(o) || 0,
-						u = $(o).text(),
-						c = $(o).attr("title"),
-						r = t.replace(/\./g, "CS_").replace(/\#/g, "ID_").replace(/\s+/g, "$"),
-						u = u && u.length > 32 ? u.substr(0, 32) : u,
-						c = c && c.length > 32 ? c.substr(0, 32) : c,
-						s = {
-							eventId: r.length > 32 ? r.substr(0, 32) : r,
-							parameters: {
-								from: api.winName + "_" + api.frameName,
-								index: a,
-								title: c || u
-							}
-						};
-					i.onEvent(s), n.log("talkingDataClick:", {
-						option: t,
-						talkingData: s
-					})
-				}
+/**
+ * touch模块
+ * @author {@link http://justory.cn/#touch}
+ */
+
+let [status, timeout] = [false];
+const clickTimeout = (time) => {
+	timeout = setTimeout(() => {
+		status = false;
+		clearTimeout(timeout);
+	}, parseInt(time));
+};
+
+const ret = {
+	touch(...arg) {
+		const cfg = justory.configs;
+		let option = arg[0];
+		let cls = "string" == typeof arg[1] ? arg[1] : "";
+		let last = arg.last();
+		let tap = "function" == typeof last ? last : last.tap;
+		let [classStatus, touchstartStatus, touchlangStatus, touchstartTimeout, touchlangTimeout, touchmoveTimeout, touchendTimeout] = [true, true, true];
+		const click = (t) => {
+			if (status) {
+				clearTimeout(clickTimeout);
+				clickTimeout(cfg.blockClickTime);
+				return false;
+			} else {
+				status = true;
 			}
+			tap(t);
+			clickTimeout(cfg.blockClickTime);
+			//ret.talkingDataClick();
 		}
-	}();
-	module.exports = t
-});
+		$(document).on("touchstart", option, function() {
+			classStatus = true;
+			touchstartStatus = true;
+			touchlangStatus = true;
+			clearTimeout(touchstartTimeout);
+			clearTimeout(touchlangTimeout);
+			clearTimeout(touchmoveTimeout);
+			clearTimeout(touchendTimeout);
+			if (cls) {
+				touchstartTimeout = setTimeout(() => {
+					classStatus && $(this).addClass(cls);
+				}, 90)
+			}
+			touchlangTimeout = setTimeout(() => {
+				touchstartStatus = false;
+				if (touchlangStatus && $.isPlainObject(last) && last.lang) {
+					$(this).removeClass(cls);
+					last.lang();
+					justory.log("long touchstart:", {
+						option
+					});
+				}
+			}, 500);
+		})
+		$(document).on("touchmove", option, function() {
+			classStatus = false;
+			touchlangStatus = false;
+			clearTimeout(touchstartTimeout);
+			clearTimeout(touchlangTimeout);
+			cls && (touchmoveTimeout = setTimeout(() => {
+				$(this).removeClass(cls);
+			}, 100));
+			justory.log("touchmove:", {
+				option
+			})
+		})
+		$(document).on("touchend", option, function() {
+			touchlangStatus = false;
+			clearTimeout(touchlangTimeout);
+			cls && (touchendTimeout = setTimeout(() => {
+				$(this).removeClass(cls);
+			}, 100));
+			justory.log("touchend:", {
+				option
+			});
+			classStatus && touchstartStatus && click(this);
+		})
+	},
+	talkingDataClick: function(t, o) {
+		var e = justory.configs,
+			n = justory.systems;
+		if (e.talkingDataClick) {
+			var i = api.require("talkingData"),
+				a = $(t).index(o) || 0,
+				u = $(o).text(),
+				c = $(o).attr("title"),
+				r = t.replace(/\./g, "CS_").replace(/\#/g, "ID_").replace(/\s+/g, "$"),
+				u = u && u.length > 32 ? u.substr(0, 32) : u,
+				c = c && c.length > 32 ? c.substr(0, 32) : c,
+				s = {
+					eventId: r.length > 32 ? r.substr(0, 32) : r,
+					parameters: {
+						from: api.winName + "_" + api.frameName,
+						index: a,
+						title: c || u
+					}
+				};
+			i.onEvent(s), n.log("talkingDataClick:", {
+				option: t,
+				talkingData: s
+			})
+		}
+	}
+}
+export default ret;

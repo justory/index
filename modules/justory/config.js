@@ -1,4 +1,3 @@
-console.log(123);
 window.apiready = () => {
 
 	//ios statusBar
@@ -31,5 +30,4 @@ window.apiready = () => {
 	//require Main
 	require(['Main']);
 	
-	console.log('apiready ok');
 }

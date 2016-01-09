@@ -1,80 +1,73 @@
-define(function(require, exports, module) {
+/**
+ * 子窗口模块
+ * ver 1.0.1
+ * @author {@link http://justory.cn/#frame}
+ */
 
-	/**
-	 * 子窗口模块
-	 * ver 1.0.1
-	 * @author {@link http://justory.cn/#frame}
-	 */
-
-	var fn = function() {
-		return {
-			open: function() {
-				var cfg = justory.configs;
-				var arg = arguments[0];
-				var module = arg.module;
-				var name = arg.name || cfg.defaultFN;
-				var moduleName = module + "_" + name;
-				var url = arg.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
-				var sbHeight = cfg.statusBarHeight;
-				var rect = arg.rect || {};
-				var animation = arg.animation || {
-					type: cfg.winAnt(1)
-				};
-				(arg.pageParam && arg.pageParam.pageParam) ? [$.extend(arg.pageParam, arg.pageParam.pageParam), delete arg.pageParam.pageParam] : "";
-				var pageParam = arg.pageParam || {};
-				api.openFrame({
-					name: moduleName,
-					url: url,
-					bgColor: arg.bgColor || "rgba(255,255,255,0)",
-					bounces: (arg.bounces === true) ? true : false,
-					vScrollBarEnabled: (arg.vScrollBar === true) ? true : false,
-					hScrollBarEnabled: (arg.hScrollBar === true) ? true : false,
-					scrollToTop: (arg.scrollToTop === false) ? false : true,
-					scaleEnabled: (arg.scaleEnabled === true) ? true : false,
-					allowEdit: (arg.allowEdit === true) ? true : false,
-					softInputMode: arg.softInputMode || "auto",
-					reload: (arg.reload === true) ? true : false,
-					showProgress: (arg.showProgress === true) ? true : false,
-					//animation: animation,
-					pageParam: pageParam,
-					rect: {
-						x: rect.x || 0,
-						y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
-						w: rect.w || api.winWidth,
-						h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
-						marginLeft: rect.mL || 0,
-						marginTop: rect.mt || 0,
-						marginBottom: rect.mb || 0,
-						marginRight: rect.mr || 0
-					}
-				});
-				if (pageParam.loading === true || arg.loading === true) api.setFrameAttr({
-					name: moduleName,
-					hidden: true
-				});
-				justory.systems.log("openFrame:", {
-					name: moduleName,
-					url: url,
-					pageParam: pageParam
-				});
-			},
-			close: function() {
-				var cfg = justory.configs;
-				var arg = arguments[0];
-				var module = arg.module;
-				var name = arg.name || cfg.defaultFN;
-				var moduleName = module + "_" + name || "";
-				api.closeFrame({
-					name: moduleName
-				});
-				justory.systems.log("closeFrame:", {
-					name: moduleName,
-					url: cfg.static + module + "/" + name + "." + cfg.defaultFT
-				});
+const ret = {
+	open(...arg) {
+		const cfg = justory.configs;
+		let opt = arg[0];
+		let module = opt.module;
+		let name = opt.name || cfg.defaultFN;
+		let moduleName = module + "_" + name;
+		let url = opt.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
+		let sbHeight = cfg.statusBarHeight;
+		let rect = opt.rect || {};
+		let animation = opt.animation || {
+			type: cfg.winAnt(1)
+		};
+		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
+		let pageParam = opt.pageParam || {};
+		api.openFrame({
+			name: moduleName,
+			url,
+			bgColor: opt.bgColor || "rgba(255,255,255,0)",
+			bounces: (opt.bounces === true) ? true : false,
+			vScrollBarEnabled: (opt.vScrollBar === true) ? true : false,
+			hScrollBarEnabled: (opt.hScrollBar === true) ? true : false,
+			scrollToTop: (opt.scrollToTop === false) ? false : true,
+			scaleEnabled: (opt.scaleEnabled === true) ? true : false,
+			allowEdit: (opt.allowEdit === true) ? true : false,
+			softInputMode: opt.softInputMode || "auto",
+			reload: (opt.reload === true) ? true : false,
+			showProgress: (opt.showProgress === true) ? true : false,
+			//animation: animation,
+			pageParam: pageParam,
+			rect: {
+				x: rect.x || 0,
+				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
+				w: rect.w || api.winWidth,
+				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
+				moptinLeft: rect.mL || 0,
+				moptinTop: rect.mt || 0,
+				moptinBottom: rect.mb || 0,
+				moptinRight: rect.mr || 0
 			}
-		}
-	}();
-
-	module.exports = fn;
-
-});
+		});
+		if (pageParam.loading === true || opt.loading === true) api.setFrameAttr({
+			name: moduleName,
+			hidden: true
+		});
+		justory.log("openFrame:", {
+			name: moduleName,
+			url,
+			pageParam: pageParam
+		});
+	},
+	close(...arg) {
+		const cfg = justory.configs;
+		let opt = arg[0];
+		let module = opt.module;
+		let name = opt.name || cfg.defaultFN;
+		let moduleName = module + "_" + name || "";
+		api.closeFrame({
+			name: moduleName
+		});
+		justory.log("closeFrame:", {
+			name: moduleName,
+			url: cfg.static + module + "/" + name + "." + cfg.defaultFT
+		});
+	}
+}
+export default ret;

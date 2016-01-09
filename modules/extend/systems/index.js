@@ -30,16 +30,15 @@ const ret = {
 		close: function() {
 			var arg = arguments;
 		}
-	},
-	click: function() {
-		var arg = arguments;
-		require.async('extend/systemAtic/touch/' + v.touch, function(t) {
-			t.touch.apply("", arg);
-		});
 	},*/
+	click(...arg) {
+		require(['extend/systems/touch/' + version.touch], (t) => {
+			t['default'].touch.apply("", arg);
+		})
+	},
 	log(...arg) {
-		require(['extend/systems/console/' + version.console], (c) => {
-			c['default'].log.apply("", arg);
+		require(['extend/systems/console/' + version.console], (t) => {
+			t['default'].log.apply("", arg);
 		})
 	}
 }

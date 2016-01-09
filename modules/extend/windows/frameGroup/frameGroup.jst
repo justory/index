@@ -7,7 +7,6 @@
 const ret = {
 	open(...arg) {
 		const cfg = justory.configs;
-		const sys = justory.systems;
 		let opt = arg[0];
 		let callback = arg.last();
 		let frames = [];
@@ -49,12 +48,12 @@ const ret = {
 		}, (ret, err) => {
 			var index = parseInt(ret.index);
 			callback(index);
-			sys.log("frameGroup callback:", {
+			justory.log("frameGroup callback:", {
 				ret: ret,
 				err: err
 			});
 		});
-		sys.log("openFrameGroup:", {
+		justory.log("openFrameGroup:", {
 			name: opt.name,
 			frames: frames
 		});
