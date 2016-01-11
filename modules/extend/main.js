@@ -1,5 +1,6 @@
 //载入各种模块
 import Basics from 'Basics';
+import Msgini1 from 'Msgini1';
 import Configs from 'Configs';
 import Windows from 'Windows';
 import Datacom from 'Datacom';
@@ -11,6 +12,7 @@ class _$ extends Basics {
 	constructor() {
 		super();
 		this.configs = Configs;
+		this.msgini = Msgini1;
 		//this.windows = Windows;
 		//this.systems = Systems;
 		//this.datacom = Datacom;

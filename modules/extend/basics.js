@@ -27,16 +27,6 @@ Array.prototype.last = function() {
 };
 Array.prototype.last.exec = () => {};
 
-//返回对象(长度存在)最后一个对象
-Object.prototype.last = function() {
-	if (this.length) {
-		return this[this.length - 1];
-	} else {
-		return "";
-	}
-};
-Object.prototype.last.exec = () => {};
-
 //justory
 class _$ {
 
@@ -76,6 +66,19 @@ class _$ {
 				v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
 		}).substr(0, end || 32);
+	}
+
+	//扩展工具$.param
+	param(arg) {
+		const params = [];
+		for (let i in arg) {
+			arg[i] && params.push({
+				name: i,
+				value: arg[i]
+			})
+		}
+		console.log(JSON.stringify(params));
+		return $.param(params);
 	}
 
 	//返回当前或指定int类型app版本号

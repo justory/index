@@ -20,7 +20,7 @@ require.config({
 		Jquery: "jquery/jquery",
 		Basics: "extend/basics",
 		Configs: "extend/configs",
-		Msgini: "extend/msgini",
+		Msgini1: "extend/msgini1",
 		Windows: "extend/windows/index",
 		Systems: "extend/systems/index",
 		Datacom: "extend/datacom/index",
