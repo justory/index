@@ -54,4 +54,6 @@ setTimeout(() => {
 $(() => {
 	//开始载入页面主JS文件
 	dataMain && require([dataMain]);
+	
+	console.log("["+ api.winName +"]["+ api.frameName +"] Main success and require dataMain begin!");
 })
