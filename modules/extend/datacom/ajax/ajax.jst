@@ -1,0 +1,125 @@
+import Msgini from 'Msgini'
+
+const ret = {
+	ajax(...arg) {
+		const cfg = justory.configs;
+		let callback = (typeof arg.last() == "function") ? arg.last() : "";
+		let type = this.type || "get";
+		let upload = this.upload || false;
+		let url = arg[0];
+		let data = arg[1] || {};
+		let param = data || {};
+		let header = {};
+		let cache = false;
+		let baseUrl = cfg.baseUrl;
+		let _data = {};
+		let alwaysGet = {};
+
+		cfg.ajaxComBeforeSend(param, (opt) => {
+			const [params, headers] = [opt.params, opt.headers];
+			if (params && params.length > 0) {
+				for (let i = 0; i < params.length; i++) {
+					let [key, value] = [params[i].key, params[i].value];
+					param[key] = value;
+					params[i].alwaysGet && [alwaysGet[key] = value];
+				}
+			}
+			if (headers && headers.length > 0) {
+				for (let i = 0; i < headers.length; i++) {
+					let [key, value] = [headers[i].key, headers[i].value];
+					header[key] = value;
+				}
+			}
+			if (type == "post") {
+				if (url.indexOf("?") > -1 && param && JSON.stringify(param) != "{}") {
+					url = url + "&" + $.param(alwaysGet);
+				} else {
+					url = url + "?" + $.param(alwaysGet);
+				}
+				_data = {
+					values: param
+				}
+				upload && [_data.files = data];
+			}
+			//debug1111111111111
+			
+			if (type == "get" || type == "jsonp") {
+				if (url.indexOf("?") > -1 && param && JSON.stringify(param) != "{}") {
+					url = url + "&" + $.param(param);
+				} else {
+					url = url + "?" + $.param(param);
+				}
+			}
+			console.log(url);
+			if (url.indexOf("http") > -1) baseUrl = "";
+			console.log(456);
+			justory.log("ajax send", {
+				method: type,
+				data: _data,
+				url: baseUrl + url
+			});
+			const _callback = function(ret, err) {
+				justory.log("ajax result", {
+					ret
+				});
+				const headers = ret.headers;
+				const body = ret.body;
+				if (body) {
+					cfg.ajaxComAfterSend(body, () => {
+						callback && callback(body, headers);
+					});
+				} else {
+					var msg = '错误码：' + err.code + '；错误信息：' + err.msg + '；网络状态码：' + err.statusCode;
+					var code = err.code;
+					if (code === "" || code == undefined) code = "unknown";
+					justory.log("ajax message", {
+						msg
+					});
+					api.toast({
+						msg: Msgini.ajax[code]
+					});
+					if (api.winName != "root") {
+						setTimeout(() => {
+							api.closeWin();
+						}, 3000);
+					}
+				}
+			}
+			if (type == "jsonp") {
+				$.ajax({
+					type: "GET",
+					data: _data,
+					url: baseUrl + url,
+					timeout: cfg.ajaxTimeout,
+					dataType: 'jsonp',
+					headers: header || {},
+					success(data) {
+						_callback({
+							headers: {},
+							body: data
+						}, {
+							code: 1
+						});
+					}
+				})
+			} else {
+				api.ajax({
+					method: type,
+					tag: tag || "",
+					cache: cache,
+					data: _data,
+					url: baseUrl + url,
+					timeout: cfg.ajaxTimeout,
+					dataType: 'json',
+					charset: 'utf-8',
+					headers: header || {},
+					returnAll: true
+				}, function(ret, err) {
+					_callback(ret, err);
+				})
+			}
+		})
+	}
+}
+
+export default ret;

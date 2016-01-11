@@ -2,6 +2,7 @@
 import Basics from 'Basics';
 import Configs from 'Configs';
 import Windows from 'Windows';
+import Datacom from 'Datacom';
 import Systems from 'Systems';
 
 //基础模块添加其他模块
@@ -10,14 +11,18 @@ class _$ extends Basics {
 	constructor() {
 		super();
 		this.configs = Configs;
-		this.windows = Windows;
-		this.systems = Systems;
-
+		//this.windows = Windows;
+		//this.systems = Systems;
+		//this.datacom = Datacom;
 		//简化接口
-		this.log = Systems.log;
-		this.click = Systems.click;
 		this.frame = Windows.frame;
 		this.frameGroup = Windows.frameGroup;
+		this.get = Datacom.get;
+		this.post = Datacom.post;
+		this.jsonp = Datacom.jsonp;
+		this.upload = Datacom.upload;
+		this.click = Systems.click;
+		this.log = Systems.log;
 	}
 	
 }

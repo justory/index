@@ -1,12 +1,12 @@
 const ret = {
 	log(...arg) {
-		//const cfg = justory.configs;
-		//if (cfg.debug) {
-		let msg = arg[0] || "no message!";
-		let data = (arg[1]) ? JSON.stringify(arg[1]) : "no additional data!";
-		let _date = new Date();
-		console.log("[" + _date.getUTCSeconds() + ":" + _date.getMilliseconds() + "]{" + msg + "}[" + api.winName + "][" + api.frameName + "]==>" + data);
-		//}
+		const cfg = justory.configs;
+		if (cfg.debug) {
+			let msg = arg[0] || "no message!";
+			let data = (arg[1]) ? JSON.stringify(arg[1]) : "no additional data!";
+			let _date = new Date();
+			console.log("[" + _date.getUTCSeconds() + ":" + _date.getMilliseconds() + "]{" + msg + "}[" + api.winName + "][" + api.frameName + "]==>" + data);
+		}
 	}
 }
 

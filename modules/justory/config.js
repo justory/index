@@ -20,12 +20,14 @@ require.config({
 		Jquery: "jquery/jquery",
 		Basics: "extend/basics",
 		Configs: "extend/configs",
+		Msgini: "extend/msgini",
 		Windows: "extend/windows/index",
 		Systems: "extend/systems/index",
+		Datacom: "extend/datacom/index",
 	}
 })
 
 //require Main
 require(['Main']);
 
-console.log("["+ api.winName +"]["+ api.frameName +"] config success and require Main begin!");
+console.log("[" + api.winName + "][" + api.frameName + "] config success and require Main begin!");
