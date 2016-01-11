@@ -21,15 +21,16 @@ const ret = {
 		let [classStatus, touchstartStatus, touchlangStatus, touchstartTimeout, touchlangTimeout, touchmoveTimeout, touchendTimeout] = [true, true, true];
 		const click = (t) => {
 			if (status) {
-				clearTimeout(clickTimeout);
-				clickTimeout(cfg.blockClickTime);
-				return false;
+				clearTimeout(timeout);
+				justory.log("blockClick success:", {
+					option
+				});
 			} else {
 				status = true;
+				tap(t);
+				//ret.talkingDataClick();
 			}
-			tap(t);
 			clickTimeout(cfg.blockClickTime);
-			//ret.talkingDataClick();
 		}
 		$(document).on("touchstart", option, function() {
 			classStatus = true;
