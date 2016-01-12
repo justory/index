@@ -74,11 +74,6 @@ const ret = {
 					api.toast({
 						msg: msgcfgs.ajax[code]
 					});
-					if (api.winName != "root") {
-						setTimeout(() => {
-							api.closeWin();
-						}, 3000);
-					}
 				}
 			}
 			if (type == "jsonp") {
