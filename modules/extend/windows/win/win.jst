@@ -1,7 +1,7 @@
 /**
  * 子窗口模块
  * ver 1.0.1
- * @author {@link http://justory.cn/#frame}
+ * @author {@link http://justory.cn/#win}
  */
 
 const ret = {
@@ -19,7 +19,7 @@ const ret = {
 		};
 		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
 		let pageParam = opt.pageParam || {};
-		const frameOpt = {
+		const winOpt = {
 			name: moduleName,
 			url,
 			bgColor: opt.bgColor || "rgba(255,255,255,0)",
@@ -32,25 +32,14 @@ const ret = {
 			softInputMode: opt.softInputMode || "auto",
 			reload: (opt.reload === true) ? true : false,
 			showProgress: (opt.showProgress === true) ? true : false,
+			slidBackEnabled : (opt.slidBackEnabled === false) ? false : true,
+			slidBackType: opt.slidBackType || "edge",
+			delay: opt.delay || 0,
+			animation: animation,
 			pageParam: pageParam,
-			rect: {
-				x: rect.x || 0,
-				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
-				w: rect.w || api.winWidth,
-				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
-				moptinLeft: rect.moptinLeft || 0,
-				moptinTop: rect.moptinTop || 0,
-				moptinBottom: rect.moptinBottom || 0,
-				moptinRight: rect.moptinRight || 0
-			}
 		};
-		cfg.ios && [frameOpt.animation = animation];
-		api.openFrame(frameOpt);
-		if (pageParam.loading === true || opt.loading === true) api.setFrameAttr({
-			name: moduleName,
-			hidden: true
-		});
-		justory.log("openFrame:", {
+		api.openWin(winOpt);
+		justory.log("openWin:", {
 			name: moduleName,
 			url,
 			pageParam: pageParam
@@ -62,10 +51,10 @@ const ret = {
 		let module = opt.module;
 		let name = opt.name || cfg.defaultFN;
 		let moduleName = module + "_" + name || "";
-		api.closeFrame({
+		api.closeWin({
 			name: moduleName
 		});
-		justory.log("closeFrame:", {
+		justory.log("closeWin:", {
 			name: moduleName,
 			url: cfg.static + module + "/" + name + "." + cfg.defaultFT
 		});

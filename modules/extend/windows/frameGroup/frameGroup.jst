@@ -23,8 +23,8 @@ const ret = {
 				url,
 				bgColor: frame.bgColor || "rgba(255,255,255,0)",
 				bounces: (frame.bounces === true) ? true : false,
-				vScrollBarEnabled: (frame.vScrollBar === true) ? true : false,
-				hScrollBarEnabled: (frame.hScrollBar === true) ? true : false,
+				vScrollBarEnabled: (frame.vScrollBarEnabled === true) ? true : false,
+				hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
 				scrollToTop: (frame.scrollToTop === false) ? false : true,
 				scaleEnabled: (frame.scaleEnabled === true) ? true : false,
 				allowEdit: (frame.allowEdit === true) ? true : false,
@@ -34,13 +34,17 @@ const ret = {
 		}
 		api.openFrameGroup({
 			name: opt.name,
-			scrollEnabled: (opt.scroll === false) ? false : true,
+			scrollEnabled: (opt.scrollEnabled === false) ? false : true,
 			background: opt.background || "rgba(255,255,255,0)",
 			rect: {
 				x: rect.x || 0,
 				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
-				w: rect.w || "auto",
-				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight)
+				w: rect.w || api.winWidth,
+				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
+				moptinLeft: rect.moptinLeft || 0,
+				moptinTop: rect.moptinTop || 0,
+				moptinBottom: rect.moptinBottom || 0,
+				moptinRight: rect.moptinRight || 0
 			},
 			index: opt.index || 0,
 			preload: opt.preload || 0,
