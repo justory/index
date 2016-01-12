@@ -31,27 +31,23 @@ const ret = {
 			}
 			if (type == "post") {
 				if (url.indexOf("?") > -1) {
-					url = url + "&" + $$.param(alwaysGet);
+					url = url + "&" + $.param(alwaysGet);
 				} else {
-					url = url + "?" + $$.param(alwaysGet);
+					url = url + "?" + $.param(alwaysGet);
 				}
 				_data = {
 					values: param
 				}
 				upload && [_data.files = data];
 			}
-			//debug1111111111111
-			console.log($$.param({bbbb:"2222"}));
 			if (type == "get" || type == "jsonp") {
 				if (url.indexOf("?") > -1) {
-					url = url + "&" + $$.param(param);
+					url = url + "&" + $.param(param);
 				} else {
-					url = url + "?" + $$.param(param);
+					url = url + "?" + $.param(param);
 				}
 			}
-			console.log(url);
 			if (url.indexOf("http") > -1) baseUrl = "";
-			console.log(456);
 			justory.log("ajax send", {
 				method: type,
 				data: _data,
