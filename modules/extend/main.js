@@ -13,10 +13,6 @@ class _$ extends Basics {
 		super();
 		this.configs = Configs;
 		this.msgcfgs = Msgcfgs;
-		//this.windows = Windows;
-		//this.systems = Systems;
-		//this.datacom = Datacom;
-		//简化接口
 		this.frame = Windows.frame;
 		this.frameGroup = Windows.frameGroup;
 		this.get = Datacom.get;
