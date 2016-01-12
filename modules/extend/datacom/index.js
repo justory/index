@@ -6,6 +6,16 @@ const ret = {
 			cb(t['default']);
 		})
 	},
+	dt(cb) {
+		require(['extend/datacom/data/' + version.data], (t) => {
+			cb(t['default']);
+		})
+	},
+	sg(cb) {
+		require(['extend/datacom/storage/' + version.storage], (t) => {
+			cb(t['default']);
+		})
+	},
 	get(...arg) {
 		ret.ai((t) => {
 			t.ajax.apply({
@@ -35,6 +45,40 @@ const ret = {
 			}, arg);
 		})
 	},
+	data:{
+		publish(...arg){
+			ret.dt((t) => {
+				t.publish.apply('', arg);
+			})
+		},
+		subscribe(...arg){
+			ret.dt((t) => {
+				t.subscribe.apply('', arg);
+			})
+		},
+		send(...arg){
+			ret.dt((t) => {
+				t.send.apply('', arg);
+			})
+		},
+		get(...arg){
+			ret.dt((t) => {
+				t.get.apply('', arg);
+			})
+		}
+	},
+	storage:{
+		set(...arg){
+			ret.sg((t) => {
+				t.set.apply('', arg);
+			})
+		},
+		get(...arg){
+			ret.sg((t) => {
+				t.get.apply('', arg);
+			})
+		}
+	}
 }
 
 module.exports = ret;

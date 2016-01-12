@@ -1,6 +1,6 @@
 //载入各种模块
 import Basics from 'Basics';
-import Msgini1 from 'Msgini1';
+import Msgcfgs from 'Msgcfgs';
 import Configs from 'Configs';
 import Windows from 'Windows';
 import Datacom from 'Datacom';
@@ -12,7 +12,7 @@ class _$ extends Basics {
 	constructor() {
 		super();
 		this.configs = Configs;
-		this.msgini = Msgini1;
+		this.msgcfgs = Msgcfgs;
 		//this.windows = Windows;
 		//this.systems = Systems;
 		//this.datacom = Datacom;
@@ -23,6 +23,8 @@ class _$ extends Basics {
 		this.post = Datacom.post;
 		this.jsonp = Datacom.jsonp;
 		this.upload = Datacom.upload;
+		this.storage = Datacom.storage;
+		this.data = Datacom.data;
 		this.click = Systems.click;
 		this.log = Systems.log;
 	}
@@ -56,6 +58,11 @@ cfg.setStatusBarStyle = (style) => {
 setTimeout(() => {
 	api.removeLaunchView();
 }, cfg.launchTimeout)
+
+//窗口通信公共订阅
+window._execScript = (data) => {
+	justory.data.publish("_execScriptData", justory.strParse(data));
+}
 
 //DOM结构绘制完毕
 $(() => {

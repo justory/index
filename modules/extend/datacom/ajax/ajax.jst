@@ -1,9 +1,10 @@
 const ret = {
 	ajax(...arg) {
 		const cfg = justory.configs;
-		const msgini = justory.msgini;
+		const msgcfgs = justory.msgcfgs;
 		let callback = (typeof arg.last() == "function") ? arg.last() : "";
 		let type = this.type || "get";
+		let tag = this.tag || "";
 		let upload = this.upload || false;
 		let url = arg[0];
 		let data = arg[1] || {};
@@ -53,7 +54,7 @@ const ret = {
 				data: _data,
 				url: baseUrl + url
 			});
-			const _callback = function(ret, err) {
+			const _callback = (ret, err) => {
 				justory.log("ajax result", {
 					ret
 				});
@@ -71,7 +72,7 @@ const ret = {
 						msg
 					});
 					api.toast({
-						msg: msgini.ajax[code]
+						msg: msgcfgs.ajax[code]
 					});
 					if (api.winName != "root") {
 						setTimeout(() => {
@@ -100,7 +101,7 @@ const ret = {
 			} else {
 				api.ajax({
 					method: type,
-					tag: tag || "",
+					tag,
 					cache: cache,
 					data: _data,
 					url: baseUrl + url,
@@ -109,7 +110,7 @@ const ret = {
 					charset: 'utf-8',
 					headers: header || {},
 					returnAll: true
-				}, function(ret, err) {
+				}, (ret, err) => {
 					_callback(ret, err);
 				})
 			}

@@ -1,0 +1,74 @@
+const ret = {
+	publish(...arg) {
+		const [key, value] = [arg[0], arg[1]];
+		$(document).trigger(key, value);
+		justory.log("publish data:", {
+			key,
+			value
+		})
+	},
+	subscribe(...arg) {
+		$(document).on(arg[0], (e, data) => {
+			arg.last()(data);
+			justory.log("subscribe data:", {
+				data
+			})
+		})
+	},
+	send(...arg) {
+		const cfg = justory.configs;
+		let {
+			win, frame, subframe, frameGroup, data, name, frameName, script
+		} = arg[0];
+		const getMdName = (obj, type) => {
+				let mdName = "";
+				if (obj) {
+					mdName = obj.module + "_" + obj.name;
+					(mdName == "root_" + cfg.defaultFN) && [mdName = "root"];
+					(type == "com") && [mdName = cfg.prefixCOM + mdName];
+					(type == "frameGroup") && [mdName = cfg.prefixFG + mdName];
+				}
+				return mdName;
+			}
+			(typeof data != "string") && [data = JSON.stringify(data)];
+		script = `window._execScript(${data});`;
+		if (win && !win.frameGroup) {
+			name = getMdName(win);
+			frameName = getMdName(frame);
+			justory.log("sendData:", {
+				win: name,
+				frame: frameName,
+				data
+			});
+		} else if (subframe) {
+			name = getMdName(subframe, "com");
+			frameName = getMdName(subframe);
+			justory.log("sendData:", {
+				subframe: name,
+				frame: frameName,
+				data
+			});
+		} else if (win && win.frameGroup && frame) {
+			name = getMdName(win);
+			frameName = getMdName(frame, "frameGroup");
+			justory.log("sendData:", {
+				frameGroup: win.frameGroup,
+				frame: frameName,
+				data
+			});
+		}
+		api.execScript({
+			name,
+			frameName,
+			script
+		});
+	},
+	get(...arg) {
+		ret.subscribe("_execScriptData", (data) => {
+			arg.last()(data);
+		})
+		justory.log("getData beginning...");
+	}
+}
+
+export default ret;

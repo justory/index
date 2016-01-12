@@ -68,19 +68,6 @@ class _$ {
 		}).substr(0, end || 32);
 	}
 
-	//扩展工具$.param
-	param(arg) {
-		const params = [];
-		for (let i in arg) {
-			arg[i] && params.push({
-				name: i,
-				value: arg[i]
-			})
-		}
-		console.log(JSON.stringify(params));
-		return $.param(params);
-	}
-
 	//返回当前或指定int类型app版本号
 	appVersionInt(ver) {
 		let appVer = api.appVersion.split(".");

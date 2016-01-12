@@ -1,0 +1,52 @@
+const ret = {
+	set(...arg) {
+		let [key, value] = [arg[0], arg[1]];
+		(typeof value != "string") && [value = JSON.stringify(value)];
+		api.setPrefs({
+			key: key,
+			value: value
+		});
+		justory.log("storage set:", {
+			key,
+			value
+		});
+	},
+	get(...arg) {
+		const keys = arg[0];
+		if ($.isArray(keys)) {
+			let [length, value, i] = [keys.length, {}, 0];
+			const Callee = (n) => {
+				if (n < length) {
+					api.getPrefs({
+						key: keys[n]
+					}, (ret, err) => {
+						value[keys[n]] = justory.strParse(ret.value);
+						i++;
+						Callee(i);
+						if (n + 1 == length) {
+							arg.last()(value);
+							justory.log("storage get:", {
+								keys,
+								value,
+							});
+						}
+					});
+				}
+			}
+			Callee(i);
+		} else {
+			api.getPrefs({
+				key: keys
+			}, (ret, err) => {
+				const value = ret.value;
+				arg.last()(justory.strParse(value));
+				justory.log("storage get:", {
+					keys,
+					value,
+				});
+			});
+		}
+	}
+}
+
+export default ret;

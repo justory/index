@@ -25,7 +25,10 @@ define(function() {
 
 	//窗口系统默认读取文件类型
 	var defaultFT = "html";
-
+	
+	//公共窗口默认前缀
+	var prefixCOM = "COM_";
+	
 	//窗口组默认前缀
 	var prefixFG = "FG_";
 
@@ -109,6 +112,7 @@ define(function() {
 			static: api.wgtRootDir + "/" + state + "/",
 			defaultFN: defaultFN,
 			defaultFT: defaultFT,
+			prefixCOM: prefixCOM,
 			prefixFG: prefixFG,
 			baseUrl: protocol + "://" + _interface,
 			winAnt: function(i) {
