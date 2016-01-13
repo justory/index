@@ -91,10 +91,13 @@ define(function() {
 			if (protocol == "https") protocol = "http";
 		}
 
-		//ios android配套窗口动画
+		/* ios android配套窗口动画配置 
+		** win:winAnt(0) frame(ios):winAnt(1)
+		** animtType[2,3,4,...] 可扩展使用
+		*/
 		if (systemType == "ios") {
 			ios = true;
-			animtType = ["cube", "fade", "cube"];
+			animtType = ["movein", "fade", "cube"];
 		}
 		if (systemType == "android") {
 			android = true;

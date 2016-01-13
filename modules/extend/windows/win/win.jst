@@ -15,14 +15,15 @@ const ret = {
 		let sbHeight = cfg.statusBarHeight;
 		let rect = opt.rect || {};
 		let animation = opt.animation || {
-			type: cfg.winAnt(1)
+			type: cfg.winAnt(0),
+			duration: (cfg.ios) ? 300 : 360
 		};
 		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
 		let pageParam = opt.pageParam || {};
 		const winOpt = {
 			name: moduleName,
 			url,
-			bgColor: opt.bgColor || "rgba(255,255,255,0)",
+			bgColor: opt.bgColor || "rgba(255,255,255,1)",
 			bounces: (opt.bounces === true) ? true : false,
 			vScrollBarEnabled: (opt.vScrollBarEnabled === true) ? true : false,
 			hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
@@ -32,9 +33,9 @@ const ret = {
 			softInputMode: opt.softInputMode || "auto",
 			reload: (opt.reload === true) ? true : false,
 			showProgress: (opt.showProgress === true) ? true : false,
-			slidBackEnabled : (opt.slidBackEnabled === false) ? false : true,
-			slidBackType: opt.slidBackType || "edge",
-			delay: opt.delay || 0,
+			slidBackEnabled: (opt.slidBackEnabled === false) ? false : true,
+			slidBackType: opt.slidBackType || "full",
+			delay: opt.delay || ((cfg.ios) ? 0 : 50),
 			animation: animation,
 			pageParam: pageParam,
 		};

@@ -29,5 +29,3 @@ require.config({
 
 //require Main
 require(['Main']);
-
-console.log("[" + api.winName + "][" + api.frameName + "] config success and require Main begin!");
