@@ -10,26 +10,26 @@ const ret = {
 		let opt = arg[0];
 		let module = opt.module;
 		let name = opt.name || cfg.defaultFN;
-		let moduleName = module + "_" + name;
-		let url = opt.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
+		let moduleName = module + '_' + name;
+		let url = opt.url || cfg.static + module + '/' + name + '.' + cfg.defaultFT;
 		let sbHeight = cfg.statusBarHeight;
 		let rect = opt.rect || {};
 		let animation = opt.animation || {
 			type: cfg.winAnt(1)
 		};
-		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
+		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : '';
 		let pageParam = opt.pageParam || {};
 		const frameOpt = {
 			name: moduleName,
 			url,
-			bgColor: opt.bgColor || "rgba(255,255,255,0)",
+			bgColor: opt.bgColor || 'rgba(255,255,255,0)',
 			bounces: (opt.bounces === true) ? true : false,
 			vScrollBarEnabled: (opt.vScrollBarEnabled === true) ? true : false,
 			hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
 			scrollToTop: (opt.scrollToTop === false) ? false : true,
 			scaleEnabled: (opt.scaleEnabled === true) ? true : false,
 			allowEdit: (opt.allowEdit === true) ? true : false,
-			softInputMode: opt.softInputMode || "auto",
+			softInputMode: opt.softInputMode || 'auto',
 			reload: (opt.reload === true) ? true : false,
 			showProgress: (opt.showProgress === true) ? true : false,
 			pageParam: pageParam,
@@ -50,24 +50,48 @@ const ret = {
 			name: moduleName,
 			hidden: true
 		});
-		justory.log("openFrame:", {
+		justory.log('openFrame:', {
 			name: moduleName,
 			url,
 			pageParam: pageParam
 		});
 	},
 	close(...arg) {
-		const cfg = justory.configs;
-		let opt = arg[0];
-		let module = opt.module;
-		let name = opt.name || cfg.defaultFN;
-		let moduleName = module + "_" + name || "";
+		const [cfg, opt] = [justory.configs, arg[0]];
+		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
+		const moduleName =  module + '_' + name || '';
 		api.closeFrame({
 			name: moduleName
 		});
-		justory.log("closeFrame:", {
+		justory.log('closeFrame:', {
 			name: moduleName,
-			url: cfg.static + module + "/" + name + "." + cfg.defaultFT
+			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
+		});
+	},
+	hide(...arg) {
+		const [cfg, opt] = [justory.configs, arg[0]];
+		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
+		const moduleName =  module + '_' + name || '';
+		api.setFrameAttr({
+			name: moduleName,
+			hidden: true
+		})
+		justory.log('hideFrame:', {
+			name: moduleName,
+			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
+		});
+	},
+	show(...arg) {
+		const [cfg, opt] = [justory.configs, arg[0]];
+		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
+		const moduleName =  module + '_' + name || '';
+		api.setFrameAttr({
+			name: moduleName,
+			hidden: false
+		})
+		justory.log('showFrame:', {
+			name: moduleName,
+			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
 		});
 	}
 }

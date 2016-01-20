@@ -34,7 +34,7 @@ window.justory = window[Configs.justory] = new _$();
 //justory配置
 const cfg = justory.configs;
 
-//面主JS文件路径
+//页面主JS文件路径
 const dataMain = $("script[src='../../modules/justory/justory.js']").attr("data-main");
 
 //初始化当前窗口状态栏

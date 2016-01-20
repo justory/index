@@ -61,6 +61,32 @@ const ret = {
 			name: opt.name,
 			frames: frames
 		});
+	},
+	close(name) {
+		api.closeFrameGroup({
+			name
+		})
+		justory.log("closeFrameGroup:", {
+			name
+		})
+	},
+	hide(name) {
+		api.setFrameGroupAttr({
+			name,
+			hidden: true
+		})
+		justory.log("hideFrameGroup:", {
+			name
+		})
+	},
+	show(name) {
+		api.setFrameGroupAttr({
+			name,
+			hidden: false
+		})
+		justory.log("showFrameGroup:", {
+			name
+		})
 	}
 }
 

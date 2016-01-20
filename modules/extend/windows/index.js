@@ -38,6 +38,16 @@ const ret = {
 			ret.f((t) => {
 				t.close.apply("", arg);
 			});
+		},
+		hide(...arg) {
+			ret.f((t) => {
+				t.hide.apply("", arg);
+			});
+		},
+		show(...arg) {
+			ret.f((t) => {
+				t.show.apply("", arg);
+			});
 		}
 	},
 	frameGroup: {
@@ -46,8 +56,20 @@ const ret = {
 				t.open.apply("", arg);
 			})
 		},
-		close() {
-			//
+		close(...arg) {
+			ret.fg((t) => {
+				t.close.apply("", arg);
+			})
+		},
+		hide(...arg) {
+			ret.fg((t) => {
+				t.hide.apply("", arg);
+			})
+		},
+		show(...arg) {
+			ret.fg((t) => {
+				t.show.apply("", arg);
+			})
 		}
 	}
 }
