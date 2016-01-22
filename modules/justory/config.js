@@ -18,6 +18,7 @@ require.config({
 	paths: {
 		Main: "extend/main",
 		Jquery: "jquery/jquery",
+		Angular: "angular/angular",
 		Basics: "extend/basics",
 		Configs: "extend/configs",
 		Msgcfgs: "extend/msgcfgs",

@@ -25,10 +25,10 @@ define(function() {
 
 	//窗口系统默认读取文件类型
 	var defaultFT = "html";
-	
+
 	//公共窗口默认前缀
 	var prefixCOM = "COM_";
-	
+
 	//窗口组默认前缀
 	var prefixFG = "FG_";
 
@@ -58,6 +58,9 @@ define(function() {
 		style: "light",
 		color: "#000"
 	};
+
+	//是否启用angular
+	var angular = true;
 
 	//渠道配置
 	var channel = "apiCloud";
@@ -92,9 +95,9 @@ define(function() {
 		}
 
 		/* ios android配套窗口动画配置 
-		** win:winAnt(0) frame(ios):winAnt(1)
-		** animtType[2,3,4,...] 可扩展使用
-		*/
+		 ** win:winAnt(0) frame(ios):winAnt(1)
+		 ** animtType[2,3,4,...] 可扩展使用
+		 */
 		if (systemType == "ios") {
 			ios = true;
 			animtType = ["movein", "fade", "cube"];
@@ -109,6 +112,7 @@ define(function() {
 			debug: debug,
 			isTest: isTest,
 			justory: justory,
+			angular: angular,
 			ios: ios,
 			android: android,
 			imgCacheDir: api.cacheDir + "/" + imgCacheDir + "/",

@@ -34,6 +34,15 @@ class _$ {
 		this.version = '1.00.01';
 	}
 
+	//启动angular
+	ngBootstrap(...arg) {
+		let [module, bootstrapDOM, callback] = [arg[0], document, arg.last()];
+		(arg.length == 1 || !module) ? module = "autoModule": "";
+		(arg.length == 3 && module && arg[1]) ? bootstrapDOM = $(`*[ng-controller="${arg[1]}"]`): "";
+		callback && callback(angular.module(module, []));
+		angular.bootstrap(bootstrapDOM, [module]);
+	}
+
 	//尝试将String转换为Object
 	strParse(arg) {
 		let result = arg;

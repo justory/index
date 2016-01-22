@@ -25,7 +25,7 @@ class _$ extends Basics {
 		this.click = Systems.click;
 		this.log = Systems.log;
 	}
-	
+
 }
 
 //全局环境添加justory
@@ -63,6 +63,14 @@ window._execScript = (data) => {
 
 //DOM结构绘制完毕
 $(() => {
-	//开始载入页面主JS文件
-	dataMain && require([dataMain]);
+	if (cfg.angular) {
+		//载入Angular
+		require(["Angular"], () => {
+			//载入页面主JS文件
+			dataMain && require([dataMain]);
+		});
+	} else {
+		//载入页面主JS文件
+		dataMain && require([dataMain]);
+	}
 })
