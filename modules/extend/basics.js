@@ -27,6 +27,17 @@ Array.prototype.last = function() {
 };
 Array.prototype.last.exec = () => {};
 
+//对象合并
+$.extend({
+	assign(...arg) {
+		for (let i = 1; i < arg.length; i++) {
+			for (let n in arg[i]) {
+				arg[0][n] = arg[i][n];
+			}
+		}
+	}
+})
+
 //justory
 class _$ {
 

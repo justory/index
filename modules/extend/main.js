@@ -5,6 +5,7 @@ import Configs from 'Configs';
 import Windows from 'Windows';
 import Datacom from 'Datacom';
 import Systems from 'Systems';
+import Plugs from 'Plugs';
 
 //基础模块添加其他模块
 class _$ extends Basics {
@@ -13,23 +14,28 @@ class _$ extends Basics {
 		super();
 		this.configs = Configs;
 		this.msgcfgs = Msgcfgs;
-		this.win = Windows.win;
-		this.frame = Windows.frame;
-		this.frameGroup = Windows.frameGroup;
-		this.get = Datacom.get;
-		this.post = Datacom.post;
-		this.jsonp = Datacom.jsonp;
-		this.upload = Datacom.upload;
-		this.storage = Datacom.storage;
-		this.data = Datacom.data;
-		this.click = Systems.click;
-		this.log = Systems.log;
+		$.assign(this, Windows, Datacom, Systems);
 	}
 
 }
 
 //全局环境添加justory
 window.justory = window[Configs.justory] = new _$();
+
+//载入第三方插件
+for (let i in Plugs) {
+	if (justory[i]) {
+		justory.log(`ERROR:justory already exists method [${i}]`, {});
+	} else {
+		$.assign(justory, {
+			[i](...arg) {
+				require([`../../modules/extend/plugs/${i}/${Plugs[i]}/import.js`], (fn) => {
+					fn && fn.import(arg);
+				})
+			}
+		})
+	}
+}
 
 //justory配置
 const cfg = justory.configs;

@@ -25,6 +25,7 @@ require.config({
 		Windows: "extend/windows/index",
 		Systems: "extend/systems/index",
 		Datacom: "extend/datacom/index",
+		Plugs:"extend/plugs/version",
 	}
 })
 
