@@ -30,7 +30,8 @@ for (let i in Plugs) {
 		$.assign(justory, {
 			[i](...arg) {
 				require([`../../modules/extend/plugs/${i}/${Plugs[i]}/import.js`], (fn) => {
-					fn && fn.import(arg);
+					arg.push(`widget://modules/extend/plugs/${i}/${Plugs[i]}/`);
+					fn && fn.import.apply("", arg);
 				})
 			}
 		})

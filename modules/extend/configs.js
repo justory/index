@@ -17,6 +17,9 @@ define(function() {
 	//静态资源目录
 	var state = "static";
 
+	//第三方插件目录
+	var plugs = "widget://modules/extend/plugs/";
+
 	//图片缓存目录
 	var imgCacheDir = "imgCache";
 
@@ -117,6 +120,7 @@ define(function() {
 			android: android,
 			imgCacheDir: api.cacheDir + "/" + imgCacheDir + "/",
 			static: api.wgtRootDir + "/" + state + "/",
+			plugs: plugs,
 			defaultFN: defaultFN,
 			defaultFT: defaultFT,
 			prefixCOM: prefixCOM,
