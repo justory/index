@@ -35,7 +35,8 @@ window.justory = window[Configs.justory] = new _$();
 const cfg = justory.configs;
 
 //页面主JS文件路径
-const dataMain = $("script[src='../../modules/justory/justory.js']").attr("data-main");
+let dataMain = $("script[src='../../modules/justory/justory.js']").attr("data-main");
+if (dataMain.indexOf(".js") == -1) dataMain += ".js";
 
 //初始化当前窗口状态栏
 api.setStatusBarStyle(cfg.statusBarStyle);

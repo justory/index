@@ -22,7 +22,7 @@ const ret = {
 				name: moduleName,
 				url,
 				bgColor: frame.bgColor || "rgba(255,255,255,0)",
-				bounces: (frame.bounces === true) ? true : false,
+				bounces: (frame.bounces === false) ? false : true,
 				vScrollBarEnabled: (frame.vScrollBarEnabled === true) ? true : false,
 				hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
 				scrollToTop: (frame.scrollToTop === false) ? false : true,

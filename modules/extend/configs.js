@@ -51,7 +51,7 @@ define(function() {
 	var interfaceTest = "mapi.hilava.net";
 
 	//justory别名设置
-	var justory = "$$";
+	var justoryAlias = "$$";
 
 	//状态栏样式
 	var statusBarStyle = {
@@ -111,7 +111,7 @@ define(function() {
 			SCENE: SCENE,
 			debug: debug,
 			isTest: isTest,
-			justory: justory,
+			justory: justoryAlias,
 			angular: angular,
 			ios: ios,
 			android: android,
@@ -149,6 +149,7 @@ define(function() {
 			},
 			ajaxComAfterSend: function(body, cb) {
 				if (body.error && body.error != 0) {
+					api.hideProgress();
 					api.toast({
 						msg: body.msg
 					});
@@ -156,6 +157,7 @@ define(function() {
 						msg: body.msg
 					});
 					if (body.error == 2001) {
+						/*
 						api.removePrefs({
 							key: "userData"
 						});
@@ -169,7 +171,7 @@ define(function() {
 							module: "login",
 							name: "signup",
 							bounces: "no"
-						});
+						});*/
 					}
 				}
 				cb();
