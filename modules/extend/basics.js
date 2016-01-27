@@ -54,6 +54,11 @@ class _$ {
 		angular.bootstrap(bootstrapDOM, [module]);
 	}
 
+	//返回最后一个元素
+	last(arg) {
+		return arg[arg.length - 1];
+	}
+
 	//尝试将String转换为Object
 	strParse(arg) {
 		let result = arg;

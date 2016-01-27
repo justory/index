@@ -14,7 +14,7 @@ if (api.systemType == "ios") {
 
 //require config
 require.config({
-	baseUrl: "../../modules",
+	baseUrl: api.wgtRootDir + "/modules",
 	paths: {
 		Main: "extend/main",
 		Jquery: "jquery/jquery",
@@ -25,7 +25,7 @@ require.config({
 		Windows: "extend/windows/index",
 		Systems: "extend/systems/index",
 		Datacom: "extend/datacom/index",
-		Plugs:"extend/plugs/version",
+		Plugs: "extend/plugs/version",
 	}
 })
 

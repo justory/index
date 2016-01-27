@@ -22,6 +22,9 @@ class _$ extends Basics {
 //全局环境添加justory
 window.justory = window[Configs.justory] = new _$();
 
+//justory配置
+const cfg = justory.configs;
+
 //载入第三方插件
 for (let i in Plugs) {
 	if (justory[i]) {
@@ -29,8 +32,8 @@ for (let i in Plugs) {
 	} else {
 		$.assign(justory, {
 			[i](...arg) {
-				require([`../../modules/extend/plugs/${i}/${Plugs[i]}/import.js`], (fn) => {
-					arg.push(`widget://modules/extend/plugs/${i}/${Plugs[i]}/`);
+				require([`${cfg.plugs}${i}/${Plugs[i]}/import.js`], (fn) => {
+					arg.push(`${cfg.plugs}${i}/${Plugs[i]}/`);
 					fn && fn.import.apply("", arg);
 				})
 			}
@@ -38,12 +41,9 @@ for (let i in Plugs) {
 	}
 }
 
-//justory配置
-const cfg = justory.configs;
-
 //页面主JS文件路径
-let dataMain = $("script[src='../../modules/justory/justory.js']").attr("data-main");
-if (dataMain.indexOf(".js") == -1) dataMain += ".js";
+let dataMain = $("script[src$='justory.js']").attr("data-main");
+if (dataMain && dataMain.indexOf(".js") == -1) dataMain += ".js";
 
 //初始化当前窗口状态栏
 api.setStatusBarStyle(cfg.statusBarStyle);

@@ -18,7 +18,7 @@ define(function() {
 	var state = "static";
 
 	//第三方插件目录
-	var plugs = "widget://modules/extend/plugs/";
+	var plugs = api.wgtRootDir + "/modules/extend/plugs/";
 
 	//图片缓存目录
 	var imgCacheDir = "imgCache";
