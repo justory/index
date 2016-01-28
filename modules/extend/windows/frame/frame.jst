@@ -17,7 +17,7 @@ const ret = {
 		let animation = opt.animation || {
 			type: cfg.winAnt(1)
 		};
-		(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : '';
+		//(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : '';
 		let pageParam = opt.pageParam || {};
 		const frameOpt = {
 			name: moduleName,
@@ -46,7 +46,7 @@ const ret = {
 		};
 		cfg.ios && [frameOpt.animation = animation];
 		api.openFrame(frameOpt);
-		if (pageParam.loading === true || opt.loading === true) api.setFrameAttr({
+		if (opt.hidden === true || opt.loading === true) api.setFrameAttr({
 			name: moduleName,
 			hidden: true
 		});
@@ -59,7 +59,7 @@ const ret = {
 	close(...arg) {
 		const [cfg, opt] = [justory.configs, arg[0]];
 		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName =  module + '_' + name || '';
+		const moduleName = module + '_' + name || '';
 		api.closeFrame({
 			name: moduleName
 		});
@@ -71,7 +71,7 @@ const ret = {
 	hide(...arg) {
 		const [cfg, opt] = [justory.configs, arg[0]];
 		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName =  module + '_' + name || '';
+		const moduleName = module + '_' + name || '';
 		api.setFrameAttr({
 			name: moduleName,
 			hidden: true
@@ -84,7 +84,7 @@ const ret = {
 	show(...arg) {
 		const [cfg, opt] = [justory.configs, arg[0]];
 		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName =  module + '_' + name || '';
+		const moduleName = module + '_' + name || '';
 		api.setFrameAttr({
 			name: moduleName,
 			hidden: false
