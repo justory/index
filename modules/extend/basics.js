@@ -42,7 +42,7 @@ $.extend({
 class _$ {
 
 	constructor() {
-		this.version = '1.00.01';
+		this.version = '1.00.00';
 	}
 
 	//启动angular
