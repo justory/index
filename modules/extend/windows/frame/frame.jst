@@ -35,7 +35,7 @@ const ret = {
 			pageParam: pageParam,
 			rect: {
 				x: rect.x || 0,
-				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
+				y: (rect._y || rect._y === 0) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
 				w: rect.w || api.winWidth,
 				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
 				moptinLeft: rect.moptinLeft || 0,
