@@ -16,7 +16,8 @@ const ret = {
 			let frame = opt.frames[i];
 			let module = frame.module;
 			let name = frame.name || cfg.defaultFN;
-			let moduleName = cfg.prefixFG + module + "_" + name;
+			let alias = frame.alias || name;
+			let moduleName = cfg.prefixFG + module + "_" + alias;
 			let url = frame.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
 			frames.push({
 				name: moduleName,

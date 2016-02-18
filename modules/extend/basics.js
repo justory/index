@@ -90,18 +90,51 @@ class _$ {
 			let r = Math.random() * 16 | 0,
 				v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
-		}).substr(0, end || 32);
+		}).substr(0, end || 32)
 	}
 
 	//返回当前或指定int类型app版本号
-	appVersionInt(ver) {
+	appVersionInt(v) {
 		let appVer = api.appVersion.split(".");
-		if (ver) appVer = ver.split(".");
-		const _fn = (num) => {
-			let _appVer = appVer[num];
-			return (_appVer.length == 1) ? "0" + _appVer : _appVer;
+		if (v) appVer = v.split(".");
+		const fn = (num) => {
+			let ver = appVer[num];
+			return (ver.length == 1) ? "0" + ver : ver;
 		}
-		return parseInt(_fn(0) + _fn(1) + _fn(2));
+		return parseInt(fn(0) + fn(1) + fn(2));
+	}
+
+	//图片缓存
+	imgCache(ary) {
+		justory.log("开始缓存图片!", {
+			data: ary
+		})
+		const fn = (url, name) => {
+			!url && justory.log("下载地址不存在!", {
+				img_dl: url
+			})
+			url && api.imageCache({
+				policy: "cache_only",
+				thumbnail: false,
+				url
+			}, function(ret, err) {
+				if (ret) {
+					$(`[img-md5=${name}]`).attr("src", ret.url);
+				} else {
+					justory.log("下载图片失败!", {
+						msg: err.msg
+					})
+				}
+			})
+		}
+		if (ary.length > 0) {
+			for (let i = 0; i < ary.length; i++) {
+				let [img_dl, img_md5] = [ary[i].img_dl, ary[i].img_md5];
+				fn(img_dl, img_md5);
+			}
+		} else {
+			fn(ary.img_dl, ary.img_md5);
+		}
 	}
 
 }
