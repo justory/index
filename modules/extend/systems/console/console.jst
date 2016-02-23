@@ -1,4 +1,3 @@
-//add console.error
 const ret = {
 	log(...arg) {
 		const cfg = justory.configs;
@@ -6,7 +5,8 @@ const ret = {
 			let msg = arg[0] || "no message!";
 			let data = (arg[1]) ? JSON.stringify(arg[1]) : "no additional data!";
 			let _date = new Date();
-			console.log("[" + _date.getUTCSeconds() + ":" + _date.getMilliseconds() + "]{" + msg + "}[" + api.winName + "][" + api.frameName + "]==>" + data);
+			const log = "[" + _date.getUTCSeconds() + ":" + _date.getMilliseconds() + "]{" + msg + "}[" + api.winName + "][" + api.frameName + "]==>" + data;
+			(arg[2] && arg[2] == "ERROR") ? console.error(log): console.log(log);
 		}
 	}
 }

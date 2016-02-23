@@ -70,7 +70,7 @@ const ret = {
 					if (code === "" || code == undefined) code = "unknown";
 					justory.log("ajax message", {
 						msg
-					});
+					}, "ERROR");
 					api.toast({
 						msg: msgcfgs.ajax[code]
 					});
