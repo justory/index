@@ -32,8 +32,9 @@ for (let i in Plugs) {
 	} else {
 		$.assign(justory, {
 			[i](...arg) {
-				require([`${cfg.plugs}${i}/${Plugs[i]}/import.js`], (fn) => {
-					arg.push(`${cfg.plugs}${i}/${Plugs[i]}/`);
+				const path = `${cfg.plugs}${i}/${Plugs[i]}/`;
+				require([path + "import.js"], (fn) => {
+					arg.push(path);
 					fn && fn.import.apply("", arg);
 				})
 			}

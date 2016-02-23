@@ -18,7 +18,7 @@ define(function() {
 	var state = "static";
 
 	//第三方插件目录
-	var plugs = api.wgtRootDir + "/modules/extend/plugs/";
+	var plugs = "modules/extend/plugs";
 
 	//图片缓存目录
 	var imgCacheDir = "imgCache";
@@ -58,7 +58,7 @@ define(function() {
 
 	//状态栏样式
 	var statusBarStyle = {
-		style: "light",
+		style: "dark",
 		color: "#000"
 	};
 
@@ -119,8 +119,8 @@ define(function() {
 			ios: ios,
 			android: android,
 			imgCacheDir: api.cacheDir + "/" + imgCacheDir + "/",
-			static: api.wgtRootDir + "/" + state + "/",
-			plugs: plugs,
+			static: root + "/" + state + "/",
+			plugs: root + "/" + plugs + "/",
 			defaultFN: defaultFN,
 			defaultFT: defaultFT,
 			prefixCOM: prefixCOM,
@@ -138,18 +138,19 @@ define(function() {
 			statusBarStyle: statusBarStyle,
 			ajaxTimeout: ajaxTimeout,
 			ajaxComBeforeSend: function(param, cb) {
-				var kvs = [{
-					key: "token1",
-					value: "11111"
-				}, {
-					key: "token2",
-					value: "22222",
-					alwaysGet: true
-				}];
-				cb({
-					params: kvs,
-					headers: kvs
-				});
+				$$.storage.get("userData", function(r) {
+					var r = r || {};
+					cb({
+						params: [{
+							key: "access_token",
+							value: r.access_token
+						}, {
+							key: "log_id",
+							value: r.user_id
+						}],
+						headers: []
+					})
+				})
 			},
 			ajaxComAfterSend: function(body, cb) {
 				if (body.error && body.error != 0) {
@@ -157,25 +158,27 @@ define(function() {
 					api.toast({
 						msg: body.msg
 					});
-					justory.log("ajax message", {
+					$$.log("ajax message", {
 						msg: body.msg
 					});
 					if (body.error == 2001) {
-						/*
+
 						api.removePrefs({
 							key: "userData"
 						});
-						api.removePrefs({
-							key: "userInfo"
-						});
+						/*
 						api.removePrefs({
 							key: "rc_token"
-						});
-						MD.load({
+						});*/
+						$$.win.open({
 							module: "login",
 							name: "signup",
-							bounces: "no"
-						});*/
+							bounces: false,
+							slidBackEnabled: false,
+							animation: {
+								type: $$.configs.winAnt(1)
+							}
+						});
 					}
 				}
 				cb();
