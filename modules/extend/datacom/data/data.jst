@@ -62,6 +62,7 @@ const ret = {
 			frameName,
 			script
 		});
+		arg[1] && arg[1]();
 	},
 	get(...arg) {
 		ret.subscribe("_execScriptData", (data) => {
