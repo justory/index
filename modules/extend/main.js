@@ -1,4 +1,5 @@
 //载入各种模块
+import Fastclick from 'Fastclick';
 import Basics from 'Basics';
 import Msgcfgs from 'Msgcfgs';
 import Configs from 'Configs';
@@ -72,6 +73,10 @@ window._execScript = (data) => {
 
 //DOM结构绘制完毕
 $(() => {
+	
+	//处理document点击延迟
+	Fastclick.attach(document.body);
+	
 	if (cfg.angular) {
 		//载入Angular
 		require(["Angular"], () => {

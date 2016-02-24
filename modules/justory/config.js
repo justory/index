@@ -19,6 +19,7 @@ require.config({
 		Main: "extend/main",
 		Jquery: "jquery/jquery",
 		Angular: "angular/angular",
+		Fastclick: "fastclick/fastclick",
 		Basics: "extend/basics",
 		Configs: "extend/configs",
 		Msgcfgs: "extend/msgcfgs",
