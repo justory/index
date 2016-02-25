@@ -5,14 +5,14 @@ const ret = {
 		justory.log("publish data:", {
 			key,
 			value
-		})
+		},"WARN")
 	},
 	subscribe(...arg) {
 		$(document).on(arg[0], (e, data) => {
 			arg.last()(data);
 			justory.log("subscribe data:", {
 				data
-			})
+			},"WARN")
 		})
 	},
 	send(...arg) {
@@ -39,7 +39,7 @@ const ret = {
 				win: name,
 				frame: frameName,
 				data
-			});
+			},"WARN");
 		} else if (subframe) {
 			name = getMdName(subframe, "com");
 			frameName = getMdName(subframe);
@@ -47,7 +47,7 @@ const ret = {
 				subframe: name,
 				frame: frameName,
 				data
-			});
+			},"WARN");
 		} else if (win && win.frameGroup && frame) {
 			name = getMdName(win);
 			frameName = getMdName(frame, "frameGroup");
@@ -55,7 +55,7 @@ const ret = {
 				frameGroup: win.frameGroup,
 				frame: frameName,
 				data
-			});
+			},"WARN");
 		}
 		api.execScript({
 			name,
@@ -68,7 +68,7 @@ const ret = {
 		ret.subscribe("_execScriptData", (data) => {
 			arg.last()(data);
 		})
-		justory.log("getData beginning...");
+		justory.log("getData beginning...",{},"WARN");
 	}
 }
 

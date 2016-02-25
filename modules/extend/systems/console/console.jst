@@ -6,7 +6,7 @@ const ret = {
 			let data = (arg[1]) ? JSON.stringify(arg[1]) : "no additional data!";
 			let _date = new Date();
 			const log = "[" + _date.getUTCSeconds() + ":" + _date.getMilliseconds() + "]{" + msg + "}[" + api.winName + "][" + api.frameName + "]==>" + data;
-			(arg[2] && arg[2] == "ERROR") ? console.error(log): console.log(log);
+			(arg[2] && arg[2] == "ERROR") ? console.error(log): (arg[2] && arg[2] == "WARN") ? console.warn(log) : console.log(log);
 		}
 	}
 }
