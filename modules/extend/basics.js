@@ -137,6 +137,36 @@ class _$ {
 		}
 	}
 
+	//文件下载
+	download(obj, cb) {
+		justory.log("开始下载文件!", obj)
+		let {
+			url, name, stype
+		} = obj;
+		!name && [name = justory.UID(16)];
+		!stype && [stype = "." + url.replace(/.+\./, "")];
+		api.download({
+			savePath: api.cacheDir + "/" + name + stype,
+			report: false,
+			cache: false,
+			allowResume: false,
+			url
+		}, function(ret, err) {
+			if (ret && ret.state != 2) {
+				if (ret.state == 1) {
+					cb && cb(ret.savePath.split(api.cacheDir + "/")[1].split(".")[0], ret.savePath);
+					justory.log("下载文件成功!", {
+						ret
+					})
+				}
+			} else {
+				justory.log("下载文件失败!", {
+					msg: err.msg
+				}, "ERROR")
+			}
+		})
+	}
+
 }
 
 export default _$

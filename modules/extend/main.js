@@ -47,19 +47,23 @@ for (let i in Plugs) {
 let dataMain = $("script[src$='justory.js']").attr("data-main");
 if (dataMain && dataMain.indexOf(".js") == -1) dataMain += ".js";
 
-//初始化当前窗口状态栏
-api.setStatusBarStyle(cfg.statusBarStyle);
+//初始化状态栏样式
+!api.frameName && api.setStatusBarStyle(cfg.statusBarStyle);
 
-//设置当前窗口状态栏
+//设置状态栏样式
 cfg.setStatusBarStyle = (style) => {
-	if (style) {
-		api.setStatusBarStyle(style);
-		cfg.statusBarStyle = style;
-	}
+	style && !api.frameName && [api.setStatusBarStyle(style), cfg.statusBarStyle = style];
 }
 
-//重置当前窗口状态栏
-//cfg...
+//重置状态栏样式
+if (api.winName == "root" && !api.frameName) {
+	api.addEventListener({
+		name: 'resetStatusBarStyle'
+	}, (ret, err) => {
+		api.setStatusBarStyle(cfg.statusBarStyle);
+		justory.log("resetStatusBarStyle");
+	})
+}
 
 //启动超时强制移除启动画面
 setTimeout(() => {
@@ -73,10 +77,10 @@ window._execScript = (data) => {
 
 //DOM结构绘制完毕
 $(() => {
-	
+
 	//处理document点击延迟
 	Fastclick.attach(document.body);
-	
+
 	if (cfg.angular) {
 		//载入Angular
 		require(["Angular"], () => {
@@ -87,5 +91,5 @@ $(() => {
 		//载入页面主JS文件
 		dataMain && require([dataMain]);
 	}
-	
+
 })

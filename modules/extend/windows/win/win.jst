@@ -6,60 +6,63 @@
 
 const ret = {
 	open(...arg) {
-			const cfg = justory.configs;
-			let opt = arg[0];
+		const cfg = justory.configs;
+		let opt = arg[0];
+		let module = opt.module;
+		let name = opt.name || cfg.defaultFN;
+		let moduleName = module + "_" + name;
+		let url = opt.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
+		let sbHeight = cfg.statusBarHeight;
+		let rect = opt.rect || {};
+		let animation = opt.animation || {
+			type: cfg.winAnt(0),
+			duration: (cfg.ios) ? 300 : 360
+		};
+		//(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
+		let pageParam = opt.pageParam || {};
+		const winOpt = {
+			name: moduleName,
+			url,
+			bgColor: opt.bgColor || "rgba(255,255,255,1)",
+			bounces: (opt.bounces === false) ? false : true,
+			vScrollBarEnabled: (opt.vScrollBarEnabled === true) ? true : false,
+			hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
+			scrollToTop: (opt.scrollToTop === false) ? false : true,
+			scaleEnabled: (opt.scaleEnabled === true) ? true : false,
+			allowEdit: (opt.allowEdit === true) ? true : false,
+			softInputMode: opt.softInputMode || "auto",
+			reload: (opt.reload === true) ? true : false,
+			showProgress: (opt.showProgress === true) ? true : false,
+			slidBackEnabled: (opt.slidBackEnabled === false) ? false : true,
+			slidBackType: opt.slidBackType || "full",
+			delay: opt.delay || ((cfg.ios) ? 0 : 50),
+			animation: animation,
+			pageParam: pageParam,
+		};
+		api.openWin(winOpt);
+		justory.log("openWin:", {
+			name: moduleName,
+			url,
+			pageParam: pageParam
+		});
+	},
+	close(...arg) {
+		const cfg = justory.configs;
+		let [opt, moduleName] = [arg[0], ""];
+		if (opt) {
 			let module = opt.module;
 			let name = opt.name || cfg.defaultFN;
-			let moduleName = module + "_" + name;
-			let url = opt.url || cfg.static + module + "/" + name + "." + cfg.defaultFT;
-			let sbHeight = cfg.statusBarHeight;
-			let rect = opt.rect || {};
-			let animation = opt.animation || {
-				type: cfg.winAnt(0),
-				duration: (cfg.ios) ? 300 : 360
-			};
-			//(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
-			let pageParam = opt.pageParam || {};
-			const winOpt = {
-				name: moduleName,
-				url,
-				bgColor: opt.bgColor || "rgba(255,255,255,1)",
-				bounces: (opt.bounces === false) ? false : true,
-				vScrollBarEnabled: (opt.vScrollBarEnabled === true) ? true : false,
-				hScrollBarEnabled: (opt.hScrollBarEnabled === false) ? false : true,
-				scrollToTop: (opt.scrollToTop === false) ? false : true,
-				scaleEnabled: (opt.scaleEnabled === true) ? true : false,
-				allowEdit: (opt.allowEdit === true) ? true : false,
-				softInputMode: opt.softInputMode || "auto",
-				reload: (opt.reload === true) ? true : false,
-				showProgress: (opt.showProgress === true) ? true : false,
-				slidBackEnabled: (opt.slidBackEnabled === false) ? false : true,
-				slidBackType: opt.slidBackType || "full",
-				delay: opt.delay || ((cfg.ios) ? 0 : 50),
-				animation: animation,
-				pageParam: pageParam,
-			};
-			api.openWin(winOpt);
-			justory.log("openWin:", {
-				name: moduleName,
-				url,
-				pageParam: pageParam
-			});
-		},
-		close(...arg) {
-			const cfg = justory.configs;
-			let [opt, moduleName] = [arg[0], ""];
-			if (opt) {
-				let module = opt.module;
-				let name = opt.name || cfg.defaultFN;
-				moduleName = module + "_" + name;
-			}
-			api.closeWin({
-				name: moduleName
-			});
-			justory.log("closeWin:", {
-				name: moduleName
-			});
+			moduleName = module + "_" + name;
 		}
+		api.sendEvent({
+			name: 'resetStatusBarStyle'
+		})
+		api.closeWin({
+			name: moduleName
+		})
+		justory.log("closeWin:", {
+			name: moduleName
+		})
+	}
 }
 export default ret;
