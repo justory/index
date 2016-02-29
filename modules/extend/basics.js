@@ -86,7 +86,7 @@ class _$ {
 
 	//生成唯一id,默认32位
 	UID(end) {
-		return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+		return 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
 			let r = Math.random() * 16 | 0,
 				v = c == 'x' ? r : (r & 0x3 | 0x8);
 			return v.toString(16);
@@ -104,6 +104,58 @@ class _$ {
 		return parseInt(fn(0) + fn(1) + fn(2));
 	}
 
+	//获取设备当前经纬度
+	location(o) {
+		let loc = api;
+		!$$.configs.ios && [loc = api.require('baiduLocation')];
+		loc.startLocation({
+			accuracy: '100m',
+			filter: 1,
+			autoStop: true
+		}, (ret, err) => {
+			let {
+				latitude, longitude
+			} = ret;
+			const baidu2gcj = ($lat, $lng) => {
+				const M_PI = 3.1415926535898;
+				let $v = M_PI * 3000.0 / 180.0;
+				let $x = $lng - 0.0065;
+				let $y = $lat - 0.006;
+				let $z = Math.sqrt($x * $x + $y * $y) - 0.00002 * Math.sin($y * $v);
+				let $t = Math.atan2($y, $x) - 0.000003 * Math.cos($x * $v);
+				return {
+					'latitude': $z * Math.sin($t),
+					'longitude': $z * Math.cos($t)
+				}
+			}
+			if (ret.status) {
+				!$$.configs.ios && [ret = baidu2gcj(latitude, longitude)];
+				o.success && o.success(ret);
+				$$.storage.set("location", {
+					latitude, longitude
+				})
+			} else {
+				if (!localStorage["locationRun"]) {
+					let msg = "定位服务未开启,请进入系统设置中打开相应开关,并允许使用定位服务";
+					$$.configs.ios && [msg = "定位服务未开启,请进入系统【设置】>【隐私】>【定位服务】中打开开关,并允许使用定位服务"];
+					api.alert({
+						title: '请打开定位开关',
+						buttons: ['知道了'],
+						msg,
+					}, (ret, err) => {
+						//
+					})
+					localStorage["locationRun"] = "yes";
+				}
+				o.error && o.error(err);
+			}
+			justory.log("get location", {
+				ret: ret,
+				err: err
+			})
+		})
+	}
+
 	//图片缓存
 	imgCache(ary) {
 		justory.log("开始缓存图片!", {
@@ -117,7 +169,7 @@ class _$ {
 				policy: "cache_only",
 				thumbnail: false,
 				url
-			}, function(ret, err) {
+			}, (ret, err) => {
 				if (ret) {
 					$(`[img-md5=${name}]`).attr("src", ret.url);
 				} else {
@@ -151,7 +203,7 @@ class _$ {
 			cache: false,
 			allowResume: false,
 			url
-		}, function(ret, err) {
+		}, (ret, err) => {
 			if (ret && ret.state != 2) {
 				if (ret.state == 1) {
 					cb && cb(ret.savePath.split(api.cacheDir + "/")[1].split(".")[0], ret.savePath);
