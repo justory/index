@@ -132,7 +132,8 @@ class _$ {
 				!$$.configs.ios && [ret = baidu2gcj(latitude, longitude)];
 				o.success && o.success(ret);
 				$$.storage.set("location", {
-					latitude, longitude
+					latitude: ret.latitude,
+					longitude: ret.longitude
 				})
 			} else {
 				if (!localStorage["locationRun"]) {
