@@ -135,6 +135,9 @@ class _$ {
 					latitude: ret.latitude,
 					longitude: ret.longitude
 				})
+				justory.log("get location", {
+					ret
+				})
 			} else {
 				if (!localStorage["locationRun"]) {
 					//msg 待转入 msgcfgs
@@ -150,11 +153,10 @@ class _$ {
 					localStorage["locationRun"] = "yes";
 				}
 				o.error && o.error(err);
+				justory.log("get location", {
+					ret, err
+				}, "ERROR")
 			}
-			justory.log("get location", {
-				ret: ret,
-				err: err
-			})
 		})
 	}
 
@@ -166,7 +168,7 @@ class _$ {
 		const fn = (url, name) => {
 			!url && justory.log("下载地址不存在!", {
 				img_dl: url
-			})
+			}, "WARN")
 			url && api.imageCache({
 				policy: "cache_only",
 				thumbnail: false,
@@ -179,8 +181,8 @@ class _$ {
 					}
 				} else {
 					justory.log("下载图片失败!", {
-						msg: err.msg
-					})
+						ret, err
+					}, "ERROR")
 				}
 			})
 		}
@@ -218,7 +220,7 @@ class _$ {
 				}
 			} else {
 				justory.log("下载文件失败!", {
-					msg: err.msg
+					ret, err
 				}, "ERROR")
 			}
 		})
