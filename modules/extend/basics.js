@@ -137,6 +137,7 @@ class _$ {
 				})
 			} else {
 				if (!localStorage["locationRun"]) {
+					//msg 待转入 msgcfgs
 					let msg = "定位服务未开启,请进入系统设置中打开相应开关,并允许使用定位服务";
 					$$.configs.ios && [msg = "定位服务未开启,请进入系统【设置】>【隐私】>【定位服务】中打开开关,并允许使用定位服务"];
 					api.alert({
@@ -172,7 +173,10 @@ class _$ {
 				url
 			}, (ret, err) => {
 				if (ret) {
-					$(`[img-md5=${name}]`).attr("src", ret.url);
+					const img = $(`[img-md5=${name}]`);
+					for (let i = 0; i < img.length; i++) {
+						($(img[i]).attr("src") != ret.url) ? $(img[i]).attr("src", ret.url): "";
+					}
 				} else {
 					justory.log("下载图片失败!", {
 						msg: err.msg
