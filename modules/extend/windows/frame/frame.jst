@@ -5,6 +5,16 @@
  */
 
 const ret = {
+	name(arg) {
+		const cfg = justory.configs;
+		let [opt, moduleName] = [arg[0], ""];
+		if (opt) {
+			let module = opt.module;
+			let name = opt.name || cfg.defaultFN;
+			moduleName = module + "_" + name;
+		}
+		return moduleName || api.frameName;
+	},
 	open(...arg) {
 		const cfg = justory.configs;
 		let opt = arg[0];
@@ -17,7 +27,6 @@ const ret = {
 		let animation = opt.animation || {
 			type: cfg.winAnt(1)
 		};
-		//(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : '';
 		let pageParam = opt.pageParam || {};
 		const frameOpt = {
 			name: moduleName,
@@ -46,7 +55,7 @@ const ret = {
 		};
 		cfg.ios && [frameOpt.animation = animation];
 		api.openFrame(frameOpt);
-		if (opt.hidden === true || opt.loading === true) api.setFrameAttr({
+		if (opt.hidden === true) api.setFrameAttr({
 			name: moduleName,
 			hidden: true
 		});
@@ -54,45 +63,36 @@ const ret = {
 			name: moduleName,
 			url,
 			pageParam: pageParam
-		});
+		})
 	},
 	close(...arg) {
-		const [cfg, opt] = [justory.configs, arg[0]];
-		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName = module + '_' + name || '';
+		const name = ret.name(arg);
 		api.closeFrame({
-			name: moduleName
-		});
+			name
+		})
 		justory.log('closeFrame:', {
-			name: moduleName,
-			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
-		});
+			name
+		})
 	},
 	hide(...arg) {
-		const [cfg, opt] = [justory.configs, arg[0]];
-		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName = module + '_' + name || '';
+		const name = ret.name(arg);
 		api.setFrameAttr({
-			name: moduleName,
-			hidden: true
+			hidden: true,
+			name
 		})
 		justory.log('hideFrame:', {
-			name: moduleName,
-			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
-		});
+			name
+		})
 	},
 	show(...arg) {
-		const [cfg, opt] = [justory.configs, arg[0]];
-		let [module, name = cfg.defaultFN] = [opt.module, opt.name];
-		const moduleName = module + '_' + name || '';
+		const name = ret.name(arg);
 		api.setFrameAttr({
-			name: moduleName,
-			hidden: false
+			hidden: false,
+			name
 		})
 		justory.log('showFrame:', {
-			name: moduleName,
-			url: cfg.static + module + '/' + name + '.' + cfg.defaultFT
-		});
+			name
+		})
 	}
 }
 export default ret;
