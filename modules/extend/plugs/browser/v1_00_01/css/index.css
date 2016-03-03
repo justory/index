@@ -1,0 +1,110 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	height: 100%;
+	overflow: hidden;
+}
+
+.actBar._StatusBar {
+	position: relative;
+	background: #393a3f;
+	z-index: 3;
+}
+
+.actionBar {
+	position: relative;
+	height: 44px;
+	overflow: hidden;
+	z-index: 4;
+}
+
+.actionBar img {
+	vertical-align: text-bottom;
+}
+
+#back,
+#rightButton,
+#close {
+	position: absolute;
+	height: 44px;
+	line-height: 44px;
+	top: 0;
+	z-index: 99;
+	padding: 0 15px;
+	background: #393a3f;
+	font-size: 14px;
+	color: #fff;
+	z-index: 5;
+}
+
+#back {
+	left: 0;
+	padding: 0 0 0 10px;
+}
+
+#close {
+	left: 60px;
+	padding: 0 15px 0 5px;
+	display: none;
+}
+
+#back.active,
+#close.active {
+	opacity: 0.5;
+}
+
+#rightButton {
+	right: 0;
+	font-size: 14px;
+	color: #fefefe;
+}
+
+#rightButton.active {
+	background: #202123;
+}
+
+#title {
+	text-align: center;
+	height: 44px;
+	line-height: 44px;
+	font-size: 18px;
+	color: #fefefe;
+	background: #393a3f;
+}
+
+.loading {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	display: -webkit-box;
+	display: box;
+	-webkit-box-align: center;
+	box-align: center;
+	-webkit-box-pack: center;
+	box-pack: center;
+	background: #fff;
+	z-index: 2;
+}
+
+.loading img {
+	width: 26px;
+}
+
+#content {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background: #282b2d;
+	color: #6f7476;
+	font-size: 12px;
+	text-align: center;
+	padding-top: 0;
+	z-index: 1;
+}
+
+#content div {
+	margin-top: 60px;
+}

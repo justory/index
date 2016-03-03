@@ -1,0 +1,30 @@
+html,
+body {
+	margin: 0;
+	padding: 0;
+	min-height: 100%;
+}
+
+#content {
+	background: #fff;
+	position: absolute;
+	box-shadow: 0 0 9px 0 #000;
+	z-index: 98;
+	overflow: hidden;
+}
+
+.close {
+	font-size: 16px;
+	text-align: right;
+	background: #fff;
+}
+
+.hide {
+	display: none;
+}
+
+.close img {
+	width: 14px;
+	margin: 5px 6px;
+	vertical-align: text-bottom;
+}
