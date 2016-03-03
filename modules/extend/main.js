@@ -21,6 +21,8 @@ class _$ extends Basics {
 }
 
 //全局环境添加justory
+if (typeof window.justory != 'undefined') alert('ERROR:window already exists method [justory]!');
+if (typeof window[Configs.justory] != 'undefined') alert(`ERROR:window already exists method [${Configs.justory}]!`);
 window.justory = window[Configs.justory] = new _$();
 
 //justory配置
@@ -29,17 +31,46 @@ const cfg = justory.configs;
 //载入第三方插件
 for (let i in Plugs) {
 	if (justory[i]) {
-		justory.log(`ERROR:justory already exists method [${i}]`, {});
+		justory.log(`ERROR:justory already exists method [${i}]`, {}, "ERROR");
 	} else {
-		$.assign(justory, {
-			[i](...arg) {
-				const path = `${cfg.plugs}${i}/${Plugs[i]}/`;
-				require([path + "import.js"], (fn) => {
-					arg.push(path);
-					fn && fn.import.apply("", arg);
+		const {
+			version, async = true, enable = true
+		} = Plugs[i];
+		const path = `${cfg.plugs}${i}/${version}/`;
+		if (enable) {
+			if (async) {
+				$.assign(justory, {
+					[i](...arg) {
+						require([path + "import.js"], (fn) => {
+							arg.push(path);
+							fn.import && fn.import.apply("", arg);
+						})
+					}
 				})
+			} else {
+				((i, path) => {
+					require([path + "import.js"], (fn) => {
+						$.assign(justory, {
+							[i](...arg) {
+								arg.push(path);
+								return fn.import && fn.import.apply("", arg);
+							}
+						})
+						if (fn.methods) {
+							for (let m in fn.methods) {
+								if (justory[m]) {
+									justory.log(`ERROR:justory already exists method [${m}]`, {}, "ERROR");
+								} else {
+									m && $.assign(justory, {
+										[m]: fn.methods[m]
+									})
+								}
+							}
+						}
+					})
+				})(i, path)
 			}
-		})
+		}
 	}
 }
 
@@ -84,9 +115,11 @@ $(() => {
 	if (cfg.angular) {
 		//载入Angular
 		require(["Angular"], () => {
+			//载入Angular模块
+			require(["sanitize"]);
 			//载入页面主JS文件
 			dataMain && require([dataMain]);
-		});
+		})
 	} else {
 		//载入页面主JS文件
 		dataMain && require([dataMain]);

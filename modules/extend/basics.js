@@ -5,7 +5,7 @@
 import Jquery from 'Jquery';
 
 //Jquery
-window.$ = Jquery;
+window.$ = window.jQuery = Jquery;
 
 //删除数组指定索引元素
 Array.prototype.remove = function(index) {
@@ -50,7 +50,7 @@ class _$ {
 		let [module, bootstrapDOM, callback] = [arg[0], document, arg.last()];
 		(arg.length == 1 || !module) ? module = "autoModule": "";
 		(arg.length == 3 && module && arg[1]) ? bootstrapDOM = $(`*[ng-controller="${arg[1]}"]`): "";
-		callback && callback(angular.module(module, []));
+		callback && callback(angular.module(module, ['ngSanitize']));
 		angular.bootstrap(bootstrapDOM, [module]);
 	}
 
