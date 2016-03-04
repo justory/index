@@ -18,7 +18,7 @@
 		pageParam: pageParam,
 		rect: {
 			y: barH,
-			h: api.winHeight - barH
+			h: api.winHeight - barH - (param.marginBottom || 0)
 		}
 	});
 

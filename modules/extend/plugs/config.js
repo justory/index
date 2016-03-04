@@ -18,5 +18,10 @@ define({
 		version: "v1_00_01",
 		async: true,
 		enable: true
+	},
+	button: {
+		version: "v1_00_01",
+		async: false,
+		enable: true
 	}
 })

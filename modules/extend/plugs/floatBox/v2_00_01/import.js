@@ -58,6 +58,7 @@ define({
 			bounces: false,
 			reload: true,
 			softInputMode: "pan",
+			pageParam: opt.pageParam,
 			rect: {
 				x: left,
 				_y: top,
