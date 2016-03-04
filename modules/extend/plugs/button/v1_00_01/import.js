@@ -58,9 +58,9 @@ define({
 					highlight: bg.highlight || bg.normal,
 					active: bg.active || bg.normal
 				},
-				fixed: false,
-				move: false,
-				//fixedOn: api.frameName
+				fixed: opt.fixed || false,
+				move: opt.move || false,
+				fixedOn: opt.fixedOn || ""
 			}
 
 			btn.open(param, function(ret, err) {
