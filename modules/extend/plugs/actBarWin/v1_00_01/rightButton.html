@@ -17,7 +17,20 @@
 			<div id="rightButton"></div>
 		</div>
 		<div class="loading">
-			<img src="img/loading.gif" />
+			<script>
+				var u = window.navigator.userAgent;
+				if (u.indexOf('Android') > -1 || u.indexOf('Linux') > -1) {
+					//android
+					var num = parseInt(u.substr(u.indexOf('Android') + 8, 3));
+					if (num > 5) {
+						document.write('loading...');
+					} else {
+						document.write('<img src="img/loading.gif" />');
+					}
+				} else {
+					document.write('<img src="img/loading.gif" />');
+				}
+			</script>
 		</div>
 
 	</body>

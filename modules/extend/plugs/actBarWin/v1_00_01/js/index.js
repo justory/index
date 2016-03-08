@@ -1,14 +1,15 @@
 ~ function() {
-
+	
 	var param = api.pageParam;
 	var configs = param.configs;
-	var pageParam = param.pageParam;
+	var pageParam = param.pageParam || {};
 
 	configs.title && $("#title").html(configs.title);
 	(configs.button) ? $("#rightButton").html(configs.button): $("#rightButton").hide();
 
 	var barH = $(".actionBar").height();
-
+	
+	pageParam._hidden = (param.bgColor) ? true : false;
 	$$.frame.open({
 		module: param.module,
 		name: param.name,
@@ -22,15 +23,7 @@
 		}
 	});
 
-	$$.click("#rightButton", "active", function() {
-		/*$$.data.send({
-			win: {
-				module: "root",
-				name: "index"
-			}
-		},function(){
-			$$.win.close();
-		});*/
+	var dataSend = function() {
 		$$.data.send({
 			win: {
 				module: "ABW_" + param.module,
@@ -42,10 +35,28 @@
 			},
 			data: configs
 		});
+	}
+
+	$$.click("#rightButton", "active", function() {
+		dataSend();
 	});
 
 	$$.click("#back", "active", function() {
-		$$.win.close();
+		if (configs.type == "LC") {
+			dataSend();
+		} else {
+			$$.win.close();
+		}
 	});
+
+	setTimeout(function() {
+		$(".loading").remove();
+	}, 5000);
+
+	api.addEventListener({
+		name: 'loadingRemove'
+	}, function(ret, err) {
+		$(".loading").remove();
+	})
 
 }();

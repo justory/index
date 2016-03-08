@@ -69,7 +69,12 @@
 	$("#content font").html(UrlRegEx(param.url));
 	setTimeout(function() {
 		$(".loading").remove();
-	}, 2000);
+	}, 3000);
+	api.addEventListener({
+		name: 'loadingRemove'
+	}, function(ret, err) {
+		$(".loading").remove();
+	})
 
 	var menuHidden = function() {
 		clearTimeout(getLocInfoSetTime);

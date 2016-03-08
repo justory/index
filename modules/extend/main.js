@@ -109,6 +109,13 @@ window._execScript = (data) => {
 //DOM结构绘制完毕
 $(() => {
 
+	//通知actBarWin移除loading
+	if (api.winName && api.frameName && api.pageParam._hidden === false && api.winName.indexOf('ABW_') > -1) {
+		api.sendEvent({
+			name: 'loadingRemove'
+		})
+	}
+
 	//处理document点击延迟
 	Fastclick.attach(document.body);
 

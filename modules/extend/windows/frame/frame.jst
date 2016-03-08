@@ -90,6 +90,11 @@ const ret = {
 			hidden: false,
 			name
 		})
+		if (api.winName && api.frameName && api.pageParam._hidden === true && api.winName.indexOf('ABW_') > -1) {
+			api.sendEvent({
+				name: 'loadingRemove'
+			})
+		}
 		justory.log('showFrame:', {
 			name
 		})

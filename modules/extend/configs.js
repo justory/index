@@ -65,6 +65,9 @@ define(function() {
 	//是否启用angular
 	var angular = true;
 
+	//资源版本号
+	var resource = "0.0.1";
+
 	//渠道配置
 	var channel = "apiCloud";
 
@@ -84,6 +87,7 @@ define(function() {
 			_interface = interfaceProduce;
 			if (isDebug == "no" || !isDebug) {
 				loc["debug"] = "no";
+				debug = false;
 			} else {
 				loc["debug"] = "yes";
 				debug = true;
@@ -92,8 +96,13 @@ define(function() {
 		} else {
 			_interface = interfaceTest;
 			isTest = true;
-			loc["debug"] = "yes";
-			debug = true;
+			if (isDebug == "no" || !isDebug) {
+				loc["debug"] = "no";
+				debug = false;
+			} else {
+				loc["debug"] = "yes";
+				debug = true;
+			}
 			if (protocol == "https") protocol = "http";
 		}
 
@@ -132,23 +141,53 @@ define(function() {
 			blockClickTime: blockClickTime,
 			talkingDataClick: talkingDataClick,
 			launchTimeout: launchTimeout,
+			resource: resource,
 			channel: channel,
 			statusBar: statusBar,
 			statusBarHeight: statusBarHeight,
 			statusBarStyle: statusBarStyle,
 			ajaxTimeout: ajaxTimeout,
 			ajaxComBeforeSend: function(param, cb) {
-				$$.storage.get("userData", function(r) {
-					var r = r || {};
+				$$.storage.get(["userData", "adcode"], function(r) {
+					var u = r.userData || {};
 					cb({
 						params: [{
 							key: "access_token",
-							value: r.access_token
+							value: u.access_token
 						}, {
 							key: "log_id",
-							value: r.user_id
+							value: u.user_id,
+							alwaysGet: true
+						}, {
+							key: "appIdentifier",
+							value: "teacher",
+							alwaysGet: true
 						}],
-						headers: []
+						headers: [{
+							key: "xbAdcode",
+							value: r.adcode
+						}, {
+							key: "xbAppVersion",
+							value: api.appVersion
+						}, {
+							key: "xbChannel",
+							value: channel
+						}, {
+							key: "xbDeviceId",
+							value: api.deviceId
+						}, {
+							key: "xbDeviceModel",
+							value: api.deviceModel
+						}, {
+							key: "xbDeviceToken",
+							value: api.deviceToken
+						}, {
+							key: "xbSystemType",
+							value: systemType
+						}, {
+							key: "xbSystemVersion",
+							value: api.systemVersion
+						}]
 					})
 				})
 			},

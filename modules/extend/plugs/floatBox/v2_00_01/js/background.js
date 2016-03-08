@@ -1,20 +1,19 @@
 ~ function() {
 
 	var close = function() {
-		$$.frame.close({
-			module: "floatBox",
-			name: "content"
-		})
-		setTimeout(function() {
-			api.closeFrame();
-		}, 100);
+		api.closeFrame({
+			name: 'floatBox_content'
+		});
+		api.closeFrame({
+			name: 'floatBox_background'
+		});
 	}
-	
+
 	var animationStatus = true;
-	var animation = function(y) {
+	var animation = function(y, s) {
 		api.animation({
 			name: "floatBox_content",
-			duration: 0,
+			duration: ($$.configs.ios) ? s : 0,
 			translation: {
 				y: y,
 			}
@@ -26,18 +25,19 @@
 	api.addEventListener({
 		name: 'scrollUpFloatBox'
 	}, function() {
-		animation(-100);
+		animation(-100, 200);
 	})
 
 	api.addEventListener({
 		name: 'scrollDownFloatBox'
 	}, function() {
-		animationStatus && animation(100);
+		animationStatus && $$.configs.ios && animation(100, 0);
 	})
 
 	api.addEventListener({
 		name: 'tap'
 	}, function() {
+		animationStatus = false;
 		close();
 	})
 
