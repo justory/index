@@ -47,11 +47,21 @@ class _$ {
 
 	//启动angular
 	ngBootstrap(...arg) {
-		let [module, bootstrapDOM, callback] = [arg[0], document, arg.last()];
-		(arg.length == 1 || !module) ? module = "autoModule": "";
-		(arg.length == 3 && module && arg[1]) ? bootstrapDOM = $(`*[ng-controller="${arg[1]}"]`): "";
-		callback && callback(angular.module(module, ['ngSanitize']));
-		angular.bootstrap(bootstrapDOM, [module]);
+		let [ng, callback, ngArray] = [(typeof arg[0] != 'function') ? arg[0] : [], arg.last(), []];
+		for (let n = 0; n < ng.length; n++) {
+			ngArray.push('angular/' + ng[n]);
+		}
+		const bootstrap = () => {
+			callback && callback(angular.module('autoModule', ng));
+			angular.bootstrap(document, ['autoModule']);
+		}
+		if (ngArray.length > 0) {
+			require(ngArray, () => {
+				bootstrap();
+			})
+		} else {
+			bootstrap();
+		}
 	}
 
 	//返回最后一个元素

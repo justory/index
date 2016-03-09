@@ -122,8 +122,6 @@ $(() => {
 	if (cfg.angular) {
 		//载入Angular
 		require(["Angular"], () => {
-			//载入Angular模块
-			require(["sanitize"]);
 			//载入页面主JS文件
 			dataMain && require([dataMain]);
 		})
