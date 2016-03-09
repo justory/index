@@ -117,7 +117,7 @@ class _$ {
 	//获取设备当前经纬度
 	location(o) {
 		let loc = api;
-		!$$.configs.ios && [loc = api.require('baiduLocation')];
+		!justory.configs.ios && [loc = api.require('baiduLocation')];
 		loc.startLocation({
 			accuracy: '100m',
 			filter: 1,
@@ -139,9 +139,9 @@ class _$ {
 				}
 			}
 			if (ret.status) {
-				!$$.configs.ios && [ret = baidu2gcj(latitude, longitude)];
+				!justory.configs.ios && [ret = baidu2gcj(latitude, longitude)];
 				o.success && o.success(ret);
-				$$.storage.set("location", {
+				justory.storage.set("location", {
 					latitude: ret.latitude,
 					longitude: ret.longitude
 				})
@@ -149,18 +149,17 @@ class _$ {
 					ret
 				})
 			} else {
-				if (!localStorage["locationRun"]) {
-					//msg 待转入 msgcfgs
-					let msg = "定位服务未开启,请进入系统设置中打开相应开关,并允许使用定位服务";
-					$$.configs.ios && [msg = "定位服务未开启,请进入系统【设置】>【隐私】>【定位服务】中打开开关,并允许使用定位服务"];
+				if (api.winName == "root" && !api.frameName) {
+					const locationMsg = justory.msgcfgs.location;
+					let msg = locationMsg.android;
+					justory.configs.ios && [msg = locationMsg.ios];
 					api.alert({
-						title: '请打开定位开关',
-						buttons: ['知道了'],
+						title: locationMsg.title,
+						buttons: [locationMsg.buttons],
 						msg,
 					}, (ret, err) => {
 						//
 					})
-					localStorage["locationRun"] = "yes";
 				}
 				o.error && o.error(err);
 				justory.log("get location", {
@@ -172,11 +171,11 @@ class _$ {
 
 	//图片缓存
 	imgCache(ary) {
-		justory.log("开始缓存图片!", {
+		justory.log("imgCache start!", {
 			data: ary
 		})
 		const fn = (url, name) => {
-			!url && justory.log("下载地址不存在!", {
+			!url && justory.log("Download address missing!", {
 				img_dl: url
 			}, "WARN")
 			url && api.imageCache({
@@ -190,7 +189,7 @@ class _$ {
 						($(img[i]).attr("src") != ret.url) ? $(img[i]).attr("src", ret.url): "";
 					}
 				} else {
-					justory.log("下载图片失败!", {
+					justory.log("Download picture failed!", {
 						ret, err
 					}, "ERROR")
 				}
@@ -208,7 +207,7 @@ class _$ {
 
 	//文件下载
 	download(obj, cb) {
-		justory.log("开始下载文件!", obj)
+		justory.log("Start downloading files!", obj)
 		let {
 			url, name, stype
 		} = obj;
@@ -224,12 +223,12 @@ class _$ {
 			if (ret && ret.state != 2) {
 				if (ret.state == 1) {
 					cb && cb(ret.savePath.split(api.cacheDir + "/")[1].split(".")[0], ret.savePath);
-					justory.log("下载文件成功!", {
+					justory.log("Download File success!", {
 						ret
 					})
 				}
 			} else {
-				justory.log("下载文件失败!", {
+				justory.log("Download file failed!", {
 					ret, err
 				}, "ERROR")
 			}
