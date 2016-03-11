@@ -5,14 +5,14 @@ const ret = {
 		justory.log("publish data:", {
 			key,
 			value
-		},"WARN")
+		}, "WARN")
 	},
 	subscribe(...arg) {
 		$(document).on(arg[0], (e, data) => {
 			arg.last()(data);
 			justory.log("subscribe data:", {
 				data
-			},"WARN")
+			}, "WARN")
 		})
 	},
 	send(...arg) {
@@ -23,7 +23,7 @@ const ret = {
 		const getMdName = (obj, type) => {
 				let mdName = "";
 				if (obj) {
-					mdName = obj.module + "_" + obj.name;
+					mdName = obj.moduleName || obj.module + "_" + obj.name;
 					(mdName == "root_" + cfg.defaultFN) && [mdName = "root"];
 					(type == "com") && [mdName = cfg.prefixCOM + mdName];
 					(type == "frameGroup") && [mdName = cfg.prefixFG + mdName];
@@ -39,7 +39,7 @@ const ret = {
 				win: name,
 				frame: frameName,
 				data
-			},"WARN");
+			}, "WARN");
 		} else if (subframe) {
 			name = getMdName(subframe, "com");
 			frameName = getMdName(subframe);
@@ -47,7 +47,7 @@ const ret = {
 				subframe: name,
 				frame: frameName,
 				data
-			},"WARN");
+			}, "WARN");
 		} else if (win && win.frameGroup && frame) {
 			name = getMdName(win);
 			frameName = getMdName(frame, "frameGroup");
@@ -55,7 +55,7 @@ const ret = {
 				frameGroup: win.frameGroup,
 				frame: frameName,
 				data
-			},"WARN");
+			}, "WARN");
 		}
 		api.execScript({
 			name,
@@ -68,7 +68,7 @@ const ret = {
 		ret.subscribe("_execScriptData", (data) => {
 			arg.last()(data);
 		})
-		justory.log("getData beginning...",{},"WARN");
+		justory.log("getData beginning...", {}, "WARN");
 	}
 }
 
