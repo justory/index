@@ -42,10 +42,10 @@ const ret = {
 				y: (rect._y) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
 				w: rect.w || api.winWidth,
 				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
-				moptinLeft: rect.moptinLeft || 0,
-				moptinTop: rect.moptinTop || 0,
-				moptinBottom: rect.moptinBottom || 0,
-				moptinRight: rect.moptinRight || 0
+				marginLeft: rect.marginLeft || 0,
+				marginTop: rect.marginTop || 0,
+				marginBottom: rect.marginBottom || 0,
+				marginRight: rect.marginRight || 0
 			},
 			index: opt.index || 0,
 			preload: opt.preload || 0,

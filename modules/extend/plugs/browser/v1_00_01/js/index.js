@@ -12,47 +12,25 @@
 		color: "#393a3f"
 	})
 
-	~ function() {
-		$$.frame.open({
-			module: "browser",
-			name: "menu",
-			url: param.path + "menu.html",
-			bounces: false,
-			rect: {
-				x: -200,
-				y: barH - 2,
-				w: 180,
-				_h: 212
-			}
-		})
-	}()
-
-	/*$$.storage.get("userData", function(r) {
-		var r = r || {};
-		var argC = "?";
-		if (param.url.indexOf("?") > -1) argC = "&";
-
-		$$.frame.open({
-			module: "browser",
-			name: "index",
-			url: param.url + argC + "access_token=" + r.access_token,
-			bounces: param.bounces,
-			loading: param.loading,
-			pageParam: pageParam,
-			rect: {
-				y: barH,
-				h: api.winHeight - barH
-			}
-		})
-
-	})*/
+	$$.frame.open({
+		module: "browser",
+		name: "menu",
+		url: param.path + "menu.html",
+		bounces: false,
+		rect: {
+			x: -200,
+			y: barH - 2,
+			w: 180,
+			_h: 212
+		}
+	})
 
 	$$.frame.open({
 		module: "browser",
 		name: "index",
 		url: param.url,
 		bounces: param.bounces,
-		loading: param.loading,
+		progressColor: "#45C01A",
 		pageParam: pageParam,
 		rect: {
 			y: barH,
@@ -66,10 +44,13 @@
 		return url.match(re)[1] + "://" + url.match(re)[2];
 	}
 
-	$("#content font").html(UrlRegEx(param.url));
+	var setBgUrl = function(u) {
+		$("#content font").html(UrlRegEx(u));
+	}
+	setBgUrl(param.url);
 	setTimeout(function() {
 		$(".loading").remove();
-	}, 3000);
+	}, 8000);
 	api.addEventListener({
 		name: 'loadingRemove'
 	}, function(ret, err) {
@@ -126,11 +107,14 @@
 	}
 
 	var back = function() {
-		execScript('api.historyBack(function(ret, err){api.execScript({name:"browser_v1_00_01",script:"_execScript("+ JSON.stringify(ret) +")"})});');
+		api.historyBack({
+			frameName: "browser_index"
+		}, function(ret) {
+			var status = ret.status;
+			status && $("#close").show();
+			if (status === false) $$.win.close();
+		});
 		menuHidden();
-		setTimeout(function() {
-			$("#close").show();
-		}, 500);
 	}
 
 	$$.click("#back", "active", function() {
@@ -233,122 +217,124 @@
 		})
 	}
 
-
 	var getLocInfo = function(type) {
-		api.showProgress({
-			title: '数据加载中!',
-			text: '请稍等...',
-			modal: false
-		})
 		var script = 'var _meta=document.getElementsByTagName("meta"),_desc="";' +
 			'for(i in _meta){' +
 			'if(typeof _meta[i].name!="undefined"&&_meta[i].name.toLowerCase()=="description") _desc=_meta[i].content;' +
 			'}' +
 			'api.execScript({' +
 			'name:"browser_v1_00_01",' +
-			'script:"_execScript("+ JSON.stringify({"type":"' + type + '","title":document.title,"url":location.href,"img":(document.getElementById("sharePic"))?document.getElementById("sharePic").getAttribute("d-src"):document.getElementsByTagName("img")[0].src,"desc":(_desc)?_desc:""}) +")"' +
+			'script:"_execScript("+ JSON.stringify({"type":"' + type + '","title":document.title,"url":(document.getElementById("shareUrl"))?document.getElementById("shareUrl").getAttribute("d-url"):"","img":(document.getElementById("sharePic"))?document.getElementById("sharePic").getAttribute("d-src"):document.getElementsByTagName("img")[0].src,"desc":(_desc)?_desc:""}) +")"' +
 			'});';
 		execScript(script);
-		getLocInfoSetTime = setTimeout(function() {
-			api.toast({
-				msg: "资源加载缓慢,请刷新页面或稍后操作!",
-				duration: 3000
-			})
-			api.hideProgress();
-		}, 5000)
 	}
 
-	$$.data.get(function(data) {
+	var url, title, img, desc, frameStatus = false;
+	var wxShare = function(type) {
+		if (frameStatus) {
+			menuHidden();
+			$$.download({
+				url: img,
+			}, function(name, path) {
+				imgCompress(path, function(thumbUrl) {
+					api.hideProgress();
+					var wxObj = {
+						scene: type,
+						contentType: "web_page",
+						title: title,
+						description: desc,
+						thumbUrl: thumbUrl,
+						contentUrl: url
+					}
+					if (type == "timeline") {
+						wxObj.title = desc || title;
+						wxObj.description = desc || title;
+					}
+					weixin(wxObj);
+				})
+			})
+		} else {
+			api.toast({
+				msg: "页面内容尚未加载完,请稍等!"
+			})
+		}
+	}
+	$$.data.get(function(r) {
 
+		var data = r || {};
 		var type = data.type;
-		var status = data.status;
-		var url = data.url;
+		var _url = data.url;
+		var _title = data.title;
 
-		//url && (url.indexOf("?") > -1) ? (url.match(/\?/g).length > 1) ? url = url.split("?")[0] + "?" + url.split("?")[1] : "" : "";
-		status && $("#close").show();
-		if (status === false) $$.win.close();
+		_url && [url = _url];
+		_title && [title = _title];
 
 		switch (type) {
+			case "frameClient":
+				var client = data.ret;
+				var state = client.state;
+				if (state === 1 && client.progress < 100) frameStatus = false;
+				if (state === 1 && client.progress === 100) {
+					frameStatus = true;
+					$(".loading").remove();
+					getLocInfo("resetInfo");
+				}
+				if (state === 2) {
+					url = client.url;
+					setBgUrl(url);
+				}
+				if (state === 3) {
+					title = client.title;
+					!param.title && $("#title").html(title);
+				}
+				break;
 			case "hidden":
 				rbStatus = false;
 				break;
 			case "show":
 				rbStatus = true;
 				break;
-			case "friend":
-				getLocInfo("friendInfo");
+			case "resetInfo":
+				img = data.img;
+				desc = data.desc;
+				!param.title && $("#title").html(title);
 				break;
-			case "friendInfo":
-				menuHidden();
-				$$.download({
-					url: data.img,
-				}, function(name, path) {
-					imgCompress(path, function(thumbUrl) {
-						api.hideProgress();
-						weixin({
-							scene: "session",
-							contentType: "web_page",
-							title: data.title,
-							description: data.desc,
-							thumbUrl: thumbUrl,
-							contentUrl: url
-						})
-					})
-				})
+			case "friend":
+				wxShare("session");
 				break;
 			case "timeline":
-				getLocInfo("timelineInfo");
-				break;
-			case "timelineInfo":
-				menuHidden();
-				$$.download({
-					url: data.img,
-				}, function(name, path) {
-					imgCompress(path, function(thumbUrl) {
-						api.hideProgress();
-						weixin({
-							scene: "timeline",
-							contentType: "web_page",
-							title: data.desc || data.title,
-							description: data.desc || data.title,
-							thumbUrl: thumbUrl,
-							contentUrl: url
-						})
-					})
-				})
+				wxShare("timeline");
 				break;
 			case "href":
-				getLocInfo("hrefUrl");
-				break;
-			case "hrefUrl":
-				menuHidden();
-				if ($$.configs.ios) {
-					api.openApp({
-						iosUrl: url
-					}, function(ret, err) {
-						//
-					});
-				} else {
-					api.openApp({
-						androidPkg: 'android.intent.action.VIEW',
-						mimeType: 'text/html',
-						uri: url
-					}, function(ret, err) {
-						//
-					});
+				if (url) {
+					menuHidden();
+					if ($$.configs.ios) {
+						api.openApp({
+							iosUrl: url
+						}, function(ret, err) {
+							//
+						});
+					} else {
+						api.openApp({
+							androidPkg: 'android.intent.action.VIEW',
+							mimeType: 'text/html',
+							uri: url
+						}, function(ret, err) {
+							//
+						});
+					}
+					api.hideProgress();
 				}
-				api.hideProgress();
 				break;
 			case "share":
-				getLocInfo("shareUrl");
-				break;
-			case "shareUrl":
-				menuHidden();
-				api.require("shareAction").share({
-					text: url,
-					type: "text"
-				})
-				api.hideProgress();
+				if (url) {
+					menuHidden();
+					api.require("shareAction").share({
+						text: url,
+						type: "text"
+					})
+					api.hideProgress();
+				}
 				break;
 			case "reload":
 				menuHidden();

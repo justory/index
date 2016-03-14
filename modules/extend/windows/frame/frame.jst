@@ -40,25 +40,42 @@ const ret = {
 			allowEdit: (opt.allowEdit === true) ? true : false,
 			softInputMode: opt.softInputMode || 'auto',
 			reload: (opt.reload === true) ? true : false,
-			showProgress: (opt.showProgress === true) ? true : false,
+			progress: opt.progressColor && {
+				type: "page",
+				color: opt.progressColor
+			},
 			pageParam: pageParam,
 			rect: {
 				x: rect.x || 0,
 				y: (rect._y || rect._y === 0) ? rect._y : ((rect.y) ? rect.y + sbHeight : sbHeight),
 				w: rect.w || api.winWidth,
 				h: (rect._h) ? rect._h : ((rect.h) ? rect.h - sbHeight : api.winHeight - sbHeight),
-				moptinLeft: rect.moptinLeft || 0,
-				moptinTop: rect.moptinTop || 0,
-				moptinBottom: rect.moptinBottom || 0,
-				moptinRight: rect.moptinRight || 0
+				marginLeft: rect.marginLeft || 0,
+				marginTop: rect.marginTop || 0,
+				marginBottom: rect.marginBottom || 0,
+				marginRight: rect.marginRight || 0
 			}
 		};
 		cfg.ios && [frameOpt.animation = animation];
 		api.openFrame(frameOpt);
+		opt.progressColor && api.setFrameClient({
+			frameName: moduleName
+		}, function(ret) {
+			justory.data.send({
+				win: {
+					moduleName: api.winName
+				},
+				data: {
+					type: "frameClient",
+					ret
+				}
+			})
+			justory.log('getFrameClient:', ret)
+		})
 		if (opt.hidden === true) api.setFrameAttr({
 			name: moduleName,
 			hidden: true
-		});
+		})
 		justory.log('openFrame:', {
 			name: moduleName,
 			url,

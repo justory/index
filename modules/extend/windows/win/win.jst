@@ -18,7 +18,6 @@ const ret = {
 			type: cfg.winAnt(0),
 			duration: (cfg.ios) ? 300 : 360
 		};
-		//(opt.pageParam && opt.pageParam.pageParam) ? [$.extend(opt.pageParam, opt.pageParam.pageParam), delete opt.pageParam.pageParam] : "";
 		let pageParam = opt.pageParam || {};
 		const winOpt = {
 			name: moduleName,
@@ -32,7 +31,7 @@ const ret = {
 			allowEdit: (opt.allowEdit === true) ? true : false,
 			softInputMode: opt.softInputMode || "auto",
 			reload: (opt.reload === true) ? true : false,
-			showProgress: (opt.showProgress === true) ? true : false,
+			progress: opt.progress,
 			slidBackEnabled: (opt.slidBackEnabled === false) ? false : true,
 			slidBackType: opt.slidBackType || "full",
 			delay: opt.delay || ((cfg.ios) ? 0 : 50),
