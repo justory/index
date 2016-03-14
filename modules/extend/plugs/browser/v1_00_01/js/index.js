@@ -1,10 +1,12 @@
 ~ function() {
 
+	$$.configs.android && $("#title font").css("margin-bottom", "2px");
+
 	var param = api.pageParam;
 	var pageParam = param.pageParam;
 	var rbStatus = false;
 	var getLocInfoSetTime;
-	param.title && $("#title").html(param.title);
+	param.title && $("#title p").html(param.title);
 	var barH = $(".actionBar").height();
 
 	$$.configs.setStatusBarStyle({
@@ -173,11 +175,6 @@
 			appBundle: appBundle
 		}, function(ret, err) {
 			if (ret.installed) {
-				api.showProgress({
-					title: '微信启动中!',
-					text: '请稍等...',
-					modal: false
-				});
 				setTimeout(function() {
 					api.hideProgress();
 				}, 3000);
@@ -232,6 +229,10 @@
 	var url, title, img, desc, frameStatus = false;
 	var wxShare = function(type) {
 		if (frameStatus) {
+			api.showProgress({
+				title: '微信启动中!',
+				modal: false
+			});
 			menuHidden();
 			$$.download({
 				url: img,
@@ -273,19 +274,25 @@
 			case "frameClient":
 				var client = data.ret;
 				var state = client.state;
-				if (state === 1 && client.progress < 100) frameStatus = false;
-				if (state === 1 && client.progress === 100) {
+				var loaded = function() {
 					frameStatus = true;
 					$(".loading").remove();
 					getLocInfo("resetInfo");
 				}
+				if (state === 1 && client.progress < 100) frameStatus = false;
+				if (state === 1 && client.progress === 100) {
+					loaded();
+				}
 				if (state === 2) {
 					url = client.url;
 					setBgUrl(url);
+					if ($$.configs.ios) {
+						loaded();
+					}
 				}
 				if (state === 3) {
 					title = client.title;
-					!param.title && $("#title").html(title);
+					!param.title && $("#title p").html(title);
 				}
 				break;
 			case "hidden":
@@ -297,7 +304,7 @@
 			case "resetInfo":
 				img = data.img;
 				desc = data.desc;
-				!param.title && $("#title").html(title);
+				!param.title && $("#title p").html(title);
 				break;
 			case "friend":
 				wxShare("session");

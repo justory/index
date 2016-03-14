@@ -1,3 +1,28 @@
+/**
+ * 弹性布局
+ */
+.xb,.xb-1{position:relative;display:-webkit-box;display:box;}
+.xb-wrap{position:absolute;top:0;right:0;left:0;display:-webkit-box;display:box;margin:auto;-webkit-box-orient:vertical;box-orient:vertical;}
+.xb-vp{overflow-x:hidden;margin:0;padding:0;-webkit-user-select:none;-webkit-tap-highlight-color:rgba(0, 0, 0, 0);-webkit-text-size-adjust:none;}
+.xb-vp .up{position:absolute;top:0;left:0;width:100%;min-height:100%;border:0;}
+.xb-ver{-webkit-box-orient:vertical;box-orient:vertical;}
+.xb-rev{-webkit-box-direction:reverse;box-direction:reverse;}
+.xb-con{position:absolute;width:100%;height:100%;}
+.xb-as{-webkit-box-pack:start;box-pack:start;}
+.xb-ac{-webkit-box-align:center;box-align:center;}
+.xb-ae{-webkit-box-align:end;box-align:end;}
+.xb-ps{-webkit-box-pack:start;box-pack:start;}
+.xb-pc{-webkit-box-pack:center;box-pack:center;}
+.xb-pe{-webkit-box-pack:end;box-pack:end;}
+.xb-allc{-webkit-box-align:center;box-align:center;-webkit-box-pack:center;box-pack:center;}
+.xb-pj{-webkit-box-pack:justify;box-pack:justify;}
+.xb-f1{position:relative;-webkit-box-flex:1;box-flex:1;}
+.xb-f2{position:relative;-webkit-box-flex:2;box-flex:2;}
+.xb-f3{position:relative;-webkit-box-flex:3;box-flex:3;}
+.xb-f4{position:relative;-webkit-box-flex:4;box-flex:4;}
+.xb-fw{width:100%;}
+.xb-fh{height:100%;}
+
 html,
 body {
 	margin: 0;
@@ -26,26 +51,20 @@ body {
 #back,
 #rightButton,
 #close {
-	position: absolute;
 	height: 44px;
 	line-height: 44px;
-	top: 0;
-	z-index: 99;
 	padding: 0 15px;
 	background: #393a3f;
 	font-size: 14px;
 	color: #fff;
-	z-index: 5;
 }
 
 #back {
-	left: 0;
 	padding: 0 0 0 10px;
 }
 
 #close {
-	left: 60px;
-	padding: 0 15px 0 5px;
+	padding: 0 0 0 5px;
 	display: none;
 }
 
@@ -55,8 +74,6 @@ body {
 }
 
 #rightButton {
-	right: 0;
-	font-size: 14px;
 	color: #fefefe;
 }
 
@@ -64,13 +81,23 @@ body {
 	background: #202123;
 }
 
-#title {
-	text-align: center;
+#title{
 	height: 44px;
-	line-height: 44px;
 	font-size: 18px;
 	color: #fefefe;
 	background: #393a3f;
+}
+#title p{
+	line-height: 44px;
+	margin: 0;
+}
+#title font{
+	display: table;
+    height: 18px;
+    width: 1px;
+    border-left: 1px solid #2e2e32;
+    margin-left: 5px;
+    padding-left: 5px;
 }
 
 .loading {
